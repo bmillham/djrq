@@ -2,3 +2,12 @@
 *.pyc
 *.pyo
 DJRQ/development.ini
+.settings
+.project
+.pydevproject
+bin/
+include/
+lib/
+local/
+hello.py
+service-example.py
