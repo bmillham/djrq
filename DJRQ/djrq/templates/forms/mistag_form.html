@@ -1,0 +1,59 @@
+<%!
+from web.core import session
+from djrq.templates.helpers import colon, nt_from_now
+%>
+<%page args="row"/>
+<%
+   title = row.title
+   album_name = row.album.fullname
+   artist_name = row.artist.fullname
+%>
+% if len(row.mistags) > 0:
+  <div class="mistag-popover">
+%  	for mistag in row.mistags:
+   	 Reported by: ${mistag.reported_by}
+   	 Reported ${mistag.reported | nt_from_now}
+%	endfor
+  </div>
+% else:
+<style type="text/css">
+img#spinner {
+position: absolute;
+z-index: 220;
+display: none;
+clear: none;
+}
+</style>
+<div class="mistag-popover">
+<form class="ajax" id="${row.id}" data-async data-replace="" action="/mistagform" method="post">
+ <div>
+ <img src="/img/horse_7.gif" id="spinner">
+ <div class="form-group">
+  
+  <input type="hidden" class="form-control" name="trackId" id="trackId" value="${row.id}"/>
+  <label for="inputNick">Your Nick</label>
+  <input type="text" required="true" value="${session['nick']}" class="form-control" name="inputNick" id="inputNick" placeholder="Your Site Nick"/>
+  <label for="inputTitle">Title</label>
+  <input type="text" class="form-control"
+	   name="inputTitle" id="inputTitle"
+	   placeholder="${title | h}" value="${title | h}"/>
+  <label for="inputArtist">Artist</label>
+  <input type="text" class="form-control"
+	   name="inputArtist" id="inputArtist"
+	   placeholder="${artist_name | h}" value="${artist_name | h}"/>
+  <label for="inputAlbum">Album</label>
+  <input type="text" class="form-control"
+	   name="inputAlbum" id="inputAlbum"
+	   placeholder="${album_name | h}" value="${album_name | h}"/>
+   <label for="inputComment">Comment</label>
+     <textarea class="form-control" name="inputComment" id="inputComment" placeholder="Comment"/>
+   </div>
+ <div class="form-group">
+  <div class="col-xs-offset-2 col-xs-10">
+   <button type="submit" class="btn btn-xs btn-info">Submit Mistag</button>
+  </div>
+ </div>
+</div>
+</form>
+</div>
+% endif

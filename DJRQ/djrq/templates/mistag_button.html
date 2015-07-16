@@ -1,0 +1,20 @@
+<%page args="row, idx=0"/>
+<%
+    if len(row.mistags) > 0:
+      title = "Mistag Reported: <b>%s</b>" % row.title
+      label = "Reported"
+      reported = True
+    else:
+      title = "Report Mistag: <b>%s</b>" % row.title
+      label = "&nbsp;&nbsp;Mistag&nbsp;&nbsp"
+      reported = False
+%>
+<a href="/mistagform/id/${row.id}" class="btn btn-xs ${'btn-info' if not reported else 'btn-danger'} ajax" data-toggle="popover"
+	    data-title="${title | h}</b>" 
+	    tabindex="${idx}"
+            id="mb_${row.id}"
+            data-placement="right"
+            data-trigger="click"
+	    data-content='<div class="myform mistag-popover" style="height: 400px;"><img src="/img/horse_7.gif"></div>'>
+<span class="mistag" id="mb_text_${row.id}">${label}</span>
+</a>

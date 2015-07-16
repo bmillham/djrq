@@ -1,0 +1,45 @@
+<%!
+from web.core import session
+from djrq.templates.helpers import colon, nt_from_now
+%>
+<%page args="row, requestor"/>
+<%
+    print len(row.new_requests)
+    if len(row.new_requests) > 0:
+      title = "Requested: <b>%s</b>" % row.title
+      label = "Requested"
+    else:
+      title = "Request: <b>%s</b>" % row.title
+      label = "&nbsp;&nbsp;Request&nbsp;&nbsp"
+    artist_name = row.artist.fullname
+    album_name = row.album.fullname
+%>
+% if len(row.new_requests) > 0:
+  <div class="request-popover">
+%    for new_request in row.new_requests:
+      Requested by: ${new_request.name}<br>
+      Requested ${new_request.t_stamp | nt_from_now}<br>
+      Status: ${new_request.status}<br>
+%    endfor
+  </div>
+% else:
+<div class="request-popover">
+<form class="ajax" id="${row.id}" data-async data-replace="" action="/requestform" method="post">
+ <div class="form-group">
+  <input type="hidden" class="form-control" name="trackId" id="trackId" value="${row.id}"/>
+  <input type="hidden" class="form-control hf_${row.id}" name="popoverId" value=""/>
+  <label for="inputNick">Your Nick</label>
+  <input type="text" required="true" class="form-control" value="${requestor}" name="inputNick" id="inputNick" placeholder="Your Site Nick"/>
+  </div>
+  <div class="form-group">
+   <label for="inputComment">Comment</label>
+     <textarea class="form-control" name="inputComment" id="inputComment" placeholder="Comment"></textarea>
+   </div>
+ <div class="form-group">
+  <div class="col-xs-offset-2 col-xs-10">
+   <button type="submit" class="btn btn-xs btn-primary">Submit Request</button>
+  </div>
+ </div>
+</form>
+</div>
+% endif

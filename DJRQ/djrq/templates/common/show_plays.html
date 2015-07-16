@@ -1,0 +1,17 @@
+<%page args="played"/>
+<%!
+from djrq.templates.helpers import  nt_from_now
+%>
+<div class="row">
+ <div class="col-sm-12">
+  <table class="table table-bordered table-condensed table-hover">
+   <tbody>
+% for p in played:
+    <tr>
+     <td>${p.played_by.replace("'", "&#39;")} ${p.date_played | nt_from_now}</td>
+    </tr>
+% endfor
+   </tbody>
+  </table>
+ </div>
+</div>

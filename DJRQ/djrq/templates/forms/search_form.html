@@ -1,0 +1,15 @@
+## encoding: utf-8
+
+<%inherit file="djrq.templates.master"/>
+
+<%block name="mainpage">
+<div class="container theme-showcase" role="main">
+<div class="jumbotron">
+<p>${search_type} Search</p>
+</div>
+<form  action="${web.request.script_name}" method="post">
+ Search: <input name="search_text" type="text"/><br/>
+ <input type="submit" value="Search"/>
+</form>
+</div>
+</%block>

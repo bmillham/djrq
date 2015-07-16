@@ -1,0 +1,39 @@
+## encoding: utf-8
+<%!
+from djrq.templates.helpers import colon, nt_from_now
+from humanize import naturalsize
+from datetime import datetime
+%>
+
+<%inherit file="djrq.templates.master"/>
+
+<%block name="mainpage">
+<div class="row">
+        <div class="col-md-15">
+<table class="table table-bordered table-striped table-condensed">
+ <caption>
+  <h3 align="center">
+  	${whatsnew_stats[0]} tracks added since ${start_time | nt_from_now}
+% if whatsnew_stats[0] > 0:
+  	Total Size: ${whatsnew_stats[2] | naturalsize},
+    Total Time: ${whatsnew_stats[1] | colon}
+% endif
+  </h3>
+ </caption>
+ <tr>
+   <th>Artist</th><th>New Tracks</th>
+   <th>Size</th><th>Length</th><th>Added</th>
+ </tr>
+% for count, total_time, total_size, song in whatsnew:
+ <tr>
+ <td><a href="/artist/new/${song.artist_id}">${song.artist.fullname}</a></td>
+ <td>${count}</td>
+ <td>${total_size | naturalsize}</td>
+ <td>${total_time | colon}</td>
+ <td>${song.addition_time | nt_from_now}</td>
+ </tr>
+% endfor
+</table>
+</div>
+</div>
+</%block>

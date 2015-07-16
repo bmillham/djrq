@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<%!
+ from datetime import datetime
+%>
+<%
+ current_page=None
+ requests_count=0
+ print "Lookup:", lookup(web.request.script_name), web.request.script_name
+%>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DJ-bmillham's Music Library (Admin Mode)</title>
+
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/united-bootstrap.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="/js/jquery-1.11.1.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/eldarion-ajax.min.js"></script>
+    <link href="/css/theme.css" rel="stylesheet">
+    <script type="text/javascript">
+      $(document).ready(function(){
+      $('[data-toggle="popover"]').popover({
+        animation : true,
+        html : true,
+        });
+$(document).on("eldarion-ajax:begin", function(evt, $el) {
+    $el.find('img#spinner').show();
+});
+
+$(document).on("eldarion-ajax:success", function(evt, $el, data) {
+    //console.log(data);
+    //alert(data.responseText);
+    //$el.parent().parent().parent().find('span.mistag').html(data.responseText);
+    //console.log($el);
+    //console.log($el.parent().parent());
+    //$el.parent().parent().parent().find('a').attr('data-content', data.datacontent);
+    console.log($el.parent().parent());
+    $el.parent().parent().parent().popover('hide');
+   
+});
+});
+
+    </script>
+    <style>
+      .popover {
+        max-width: 250px;
+        width: 250px;
+      }
+      .request-popover {
+        height: 250px;
+      }
+      .mistag-popover {
+        height: 390px;
+        overflow: auto;
+      }
+    </style>
+  </head>
+  <body role="document"\
+<%block name="bodydata"/>\
+>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+           <a class="navbar-brand" href="/admin"><span class="glyphicon glyphicon-cog"></span> Admin</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+	    <li class="dropdown
+% if current_page=='artist' or current_page=='album':
+    active
+% endif
+">
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-eye-open"></span> <span class="caret"></span></a>
+	      <ul class="dropdown-menu" role="menu">
+		<li
+% if current_page=='artist':
+    class="active"
+% endif
+><a href="/browse/artist">By Artist</a></li>
+		<li
+% if current_page=='album':
+    class="active"
+% endif
+><a href="/browse/album">By Album</a></li>
+	      </ul>
+	    </li>
+	    <li
+% if current_page=='requests':
+    class="active"
+% endif
+><a href="/requests">Requests <span class='badge' id="request_count">${requests_count}</span></a></li>
+	    <li class="dropdown">
+	      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">More.. <span class="caret"></span></a>
+	      <ul class="dropdown-menu" role="menu">
+		<li><a href="/stats">Library Statistics</a></li>
+		<li><a href="/whatsnew">What's New</a></li>
+	      </ul>
+	    </li>
+	    <li><a href="/admin/suggestions">Suggestions</a></li>
+	    <li><a href="/"><span class="glyphicon glyphicon-home"></span></a></li>
+
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+
+
+    </nav>
+
+    <div class="container theme-showcase" role="main">
+    <%block name="letterscontainer"/>     
+    <%block name="mainpage"/>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <p>
+    <h4 align="center">&copy; 2010-${datetime.now().year} Brian Millham</h4>
+    <h6 align="center">Powered by Python, WebCore, Mako Templates, MySQL (with SQLAlchemy), Twitter Bootstrap and Nginx</h6>
+    </p>
+  </body>
+</html>

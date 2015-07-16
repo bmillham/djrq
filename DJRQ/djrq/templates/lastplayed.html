@@ -1,0 +1,50 @@
+## encoding: utf-8
+<%!
+from djrq.templates.helpers import colon, nt_from_now
+from datetime import datetime
+from humanize import naturaltime
+%>
+
+<%inherit file="djrq.templates.master"/>
+
+<%block name="mainpage">
+<div class="row table-responsive">
+        <div class="col-md-15">
+
+<table class="table table-bordered table-striped table-condensed">
+ <thead>
+ <caption><h3 align="center">Last Played</h3></caption>
+ <tr><th>Artist</th><th>Title</th><th>Album</th><th>Length</th>
+  <th>Last Played By</th>
+ </tr>
+</thead>
+<tbody>
+% for played_count, avg_time, row in last_played:
+    <tr>
+      <td>${row.song.artist}</td>
+      <td>${row.song.title}</td>
+      <td>
+%    if played_count > 1:
+	   On ${played_count} albums
+	      <a href="javascript://"
+      		 data-toggle="popover"
+      		 data-placement="right"
+      		 title="On ${played_count} albums"
+      		 data-content='<%include file="djrq.templates.multi_albums" args="row=row"/>'>
+       <span class="glyphicon glyphicon-info-sign"></span>
+   </a>
+%    else:
+       ${row.song.album}
+%    endif
+      </td>
+      <td>\
+       ${'~' if played_count>1 else ''}${avg_time if played_count > 1 else row.song.time | colon}\
+      </td>
+      <td><%include file='djrq.templates.common.lastplay_info' args='played=row.song.played'/></td>
+    </tr>
+% endfor
+</tbody>
+</table>
+</div>
+</div>
+</%block>

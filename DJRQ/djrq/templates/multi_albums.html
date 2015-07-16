@@ -1,0 +1,20 @@
+<%page args="row, idx=0"/>
+<%!
+from djrq.templates.helpers import colon, nt_from_now
+%>
+<div class="row">
+ <div class="col-sm-12">
+<table class="table table-bordered table-condensed table-hover">
+<tbody>
+% for a in row.get_multi_albums():
+ <tr>
+   <td>
+     ${a.album | h}
+   </td>
+ <tr>
+% endfor
+</tbody>
+</table>
+</div>
+</div>
+

@@ -1,0 +1,11 @@
+<%page args="title, link, badge=None"/>
+<%
+ link = web.url(link) 
+%>
+<li${' class="active"' if web.request.environ['web.controller'] == link else ''}>\
+<a href="${link}">${title}\
+% if badge:
+ <span class='badge' id="${badge[0]}">${badge[1]}</span>\
+% endif
+</a>\
+</li>\

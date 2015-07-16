@@ -1,0 +1,49 @@
+## encoding: utf-8
+<%!
+from djrq.templates.helpers import colon, nt_from_now
+from djrq.templates.helpers import when_last_played
+from djrq.templates.helpers import last_played_by, nt, aa_link
+from datetime import datetime
+%>
+<%
+requests_count = kw['requests_count']
+requests_length = kw['requests_length']
+listeners = kw['listeners']
+%>
+
+<%inherit file="djrq.templates.master"/>
+<%block name="mainpage">
+<div class="row">
+        <div class="col-md-15">
+<table class="table table-bordered table-striped table-condensed">
+% if requests_count == 0:
+<caption><h3 align="center">No Requests</h3></caption>
+% else:
+<caption><h3 align="center"> ${requests_count} Requests (${requests_length | colon})</h3></caption>
+<tr>
+  <th>Artist</th><th>Title</th><th>Album</th><th>Length</th>
+  <th>When Requested</th><th>Last Played By</th>
+</tr>
+% for row in request_list:
+<tr>
+  <%doc><td>${row.song.artist.fullname}</td></%doc>
+  <td>${row.song.artist}</td>
+  <td>${row.song.title}</td>
+  <td>${row.song.album}</td>
+  <td>${row.song.time | colon}</td>
+  <td>${row.t_stamp | nt_from_now}</td>
+  <td>
+%    try:
+     	${row.song.played[0].played_by} ${row.song.played[0].date_played | nt_from_now}
+%	 except:
+	    &nbsp;
+%	 endtry
+  </td>
+</tr>
+% endfor
+% endif
+</table>
+</div>
+</div>
+</%block>
+

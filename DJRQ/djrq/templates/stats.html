@@ -1,0 +1,125 @@
+## encoding: utf-8
+
+<%!
+from djrq.templates.helpers import colon, nt_from_now
+from datetime import datetime
+from humanize import naturalsize, naturaltime
+%>
+
+<%inherit file="djrq.templates.master"/>
+
+<%block name="mainpage">
+ <div class="container theme-showcase" role="main">
+<div class="row">
+        <div class="col-md-15">
+<table class="table table-bordered table-striped table-condensed">
+<caption><h3 align="center">Database Statistics</h3></caption>
+<tr>
+ <td>
+  Total Tracks
+ </td>
+ <td>${stats.total_songs}</td>
+</tr>
+<tr><td>Total Played By Me</td><td>${played_by_me.total} (${"{:.2%}".format((float(played_by_me.total) / float(stats.total_songs)))})</td></tr>
+<tr><td>Artists</td><td>${total_artists.total}</td></tr>
+<tr><td>Albums</td><td>${total_albums.total}</td></tr>
+<tr>
+ <td>Total Library Size</td><td>${naturalsize(stats.song_size)}</td>
+</tr>
+<tr><td>Average Track Size</td><td>${naturalsize(stats.avg_song_size)}</td></tr>
+<tr><td>Total Track Time</td><td>${colon(stats.song_time)}</td></tr>
+<tr><td>Average Track Time</td><td>${colon(stats.avg_song_time)}</td></tr>
+</table>
+</div>
+</div>
+<div class="row">
+ <div class="col-md-15">
+  <table class="table table-bordered  table-striped table-condensed">
+   <caption><h3 align="center">Top 10 Artists</h3></caption>
+   <tr><th>#</th><th>Artist</th><th>Tracks</th></tr>
+   % for row in top_10:
+   <tr><td>${loop.index + 1}</td><td><a href="/artist/id/${row.artist_id}">${row.artist_fullname}</a></td><td>${row.artist_count}</td></tr>
+   % endfor
+  </table>
+ </div>
+</div>
+<div class="row">
+ <div class="col-md-15">
+  <table class="table table-bordered  table-striped table-condensed">
+   <caption><h3 align="center">10 Most Requested</h3></caption>
+   <tr><th># Plays</th><th colspan="2">Title</th><th>Artist</th>
+     <th>Album</th><th>Last Requested By</th>
+   </tr>
+   % for song in mostrequested:
+   <tr>
+     <td>${len(song.played_requests)}</td>
+     <td>${song.title}</td>
+     <td>
+     	<%include file='djrq.templates.request_mistag_buttons', args='row=song'/>
+     </td>
+     <td>${song.artist}</td>
+     <td>${song.album}
+     <td>
+      <span style="white-space:nowrap">
+     	${song.played_requests[0].name} ${song.played_requests[0].t_stamp | nt_from_now}
+       	<a href="javascript://"
+      		 data-toggle="popover"
+      		 data-placement="left"
+      		 title="Requests played ${len(song.played_requests)} times"
+      		 data-content='<%include file="djrq.templates.common.show_played_requests" args="played_requests=song.played_requests"/>'>\
+        <span class="glyphicon glyphicon-info-sign"></span></a></span>
+     </td>
+   </tr>
+   % endfor
+  </table>
+ </div>
+</div>
+
+<div class="row">
+ <div class="col-md-15">
+  <table class="table table-bordered  table-striped table-condensed">
+   <caption><h3 align="center">Top 10 Requestors</h3></caption>
+   <tr><th># Requests</th><th>Requestor</th><th>Last Request</th></tr>
+   % for row in toprequestors:
+   <tr>
+     <td>${row.request_count}</td>
+     <td>${row.requestor}</td>
+     <td>${row.last_request | nt_from_now} </td>
+   </tr>
+   % endfor
+  </table>
+ </div>
+</div>
+
+<div class="row">
+ <div class="col-md-15">
+   <table class="table table-bordered  table-striped table-condensed">
+     <caption><h3 align="center">10 Most Played by Me</h3></caption>
+     <tr><th># Plays</th><th colspan="2">Title</th><th>Artist</th>
+       <th>Album</th>
+       <th>Last Played</th></tr>
+     % for played, played_count, date_played in topartists:
+     <tr>
+       <td> ${played_count}</td>
+       <td>${ played.song.title}</td>
+       <td>
+	 	<%include file='djrq.templates.request_mistag_buttons', args='row=played.song'/>
+       </td>
+       <td>${played.song.artist}</td>
+       <td>${played.song.album}</td>
+       <td><span style="white-space:nowrap">${date_played | nt_from_now}&nbsp;\
+       	<a href="javascript://"
+      		 data-toggle="popover"
+      		 data-placement="left"
+      		 title="On ${played_count} albums"
+      		 data-content='<%include file="djrq.templates.common.show_plays" args="played=played.song.played"/>'>\
+        <span class="glyphicon glyphicon-info-sign"></span></a></span>
+       </td>
+     </tr>
+     % endfor
+</table>
+</div>
+</div>
+</div>
+</%block>
+

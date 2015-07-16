@@ -1,0 +1,9 @@
+setup.cfg
+setup.py
+DJDB.egg-info/PKG-INFO
+DJDB.egg-info/SOURCES.txt
+DJDB.egg-info/dependency_links.txt
+DJDB.egg-info/entry_points.txt
+DJDB.egg-info/not-zip-safe
+DJDB.egg-info/top_level.txt
+djdb/__init__.py

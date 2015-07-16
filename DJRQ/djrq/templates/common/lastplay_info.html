@@ -1,0 +1,22 @@
+## encoding: utf-8
+<%!
+from djrq.templates.helpers import nt_from_now
+%>
+<%
+	play_count = len(played)
+%>
+<%page args='played'/>
+<span style="white-space: nowrap">
+% if play_count == 0:
+ &nbsp;
+% else:
+ ${played[0].played_by} ${played[0].date_played | nt_from_now}
+%  if play_count > 1:
+ <a href="javascript://" data-toggle="popover" data-placement="left" title="Played ${play_count} times"
+    data-content='<%include file="djrq.templates.common.show_plays" args="played=played"/>'>
+ <span class="badge">${play_count}</span></a>
+%  else:
+  <span class="badge">${play_count}</span>
+%  endif
+% endif
+</span>

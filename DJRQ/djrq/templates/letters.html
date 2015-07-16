@@ -1,0 +1,81 @@
+## encoding: utf-8
+<%!
+from djrq.templates.helpers import colon, nt_from_now, fix_dot
+from datetime import datetime
+from web.core import session
+%>
+<%inherit file="djrq.templates.master"/>
+<%block name="letterscontainer">
+<%
+ if 'nolettercounts' in session:
+    nolettercounts = session['nolettercounts']
+ else:
+    nolettercounts = False
+ endif
+%>
+<nav class="container theme-showcase" role="main">
+	<h4 align=center>Browsing by ${browse_by.capitalize()}
+   	[\
+% if browse_by == 'artist':
+	 <a href="/browse/album">Browse by Album</a>\
+% else:
+	 <a href="/browse/artist">Browse by Artist</a>\
+% endif
+   	]
+    </h4> 
+<div class="row">
+<ul class="nav nav-pills col-xs-12" >
+% for letter, count in letters:
+ <% padding = '&nbsp;' * (3 - (len(str(count)))) %>
+ <li align=center ${'style="width: 90px"' if not nolettercounts else ''} tip="${letter}" role="presentation" ${'class="active"' if letter == browseletter else ''}>
+   
+   <a href="${web.request.environ['web.controller']}/${browse_by}/${letter | u, fix_dot}" tip="${count}">
+     ${letter}
+%  if not nolettercounts:
+     <span class="badge"> ${padding}${count}${padding}</span>
+%  endif
+   </a>
+ </li>
+% endfor
+</ul>
+</div>
+</nav>
+</div>
+</%block>
+<%block name="mainpage">
+<div class="container-fluid">
+<div class="row">
+ <div class="col-md-12">
+% if a_list is not None:
+<%
+    #a_len = len(a_list)
+    a_len = a_list.count()
+    i = 0
+%>
+ <table class="table table-bordered table-striped table-condensed">
+  <caption><h4 align="center">${browseletter}&lrm; (${a_len} matches)</h4><caption>
+%  for a in a_list:
+%   if i % 3 == 0:
+     <tr>
+%   endif
+  <td>${a} <span class="badge pull-right">${len(a.songs)}</span></td>
+%   if i % 3 == 2:
+     </tr>
+%   endif
+%   if i == a_len - 1:
+%    if i % 3 != 2:
+%    for i in xrange(3 - ((i + 1) % 3)):
+      <td>&nbsp;</td>
+%    endfor
+     </tr>
+%    endif
+%   endif
+<% i += 1 %>
+%  endfor
+</table>
+% endif
+</div>
+</div>
+</%block>
+
+

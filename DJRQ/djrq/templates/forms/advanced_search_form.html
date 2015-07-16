@@ -1,0 +1,22 @@
+<div>
+<form  id="advancedsearch" action="/advancedsearch"
+	style="width:220px" method="post">
+ <div>
+  <h5>You may use SQL % and _ wildcards</h5>
+ </div>
+ <div >
+   <label for="search_for">Search for</label>
+   <select class="form-control" name="search_for">
+   	<option value="artist">Artist</option>
+   	<option value="album">Album</option>
+   	<option value="title">Title</option>
+   </select>
+   <label for="inputSearchText">Search Text</label>
+   <input type="text" class="form-control" name="inputSearchText" id="inputSearchText" placeholder="Search Text"/>\
+ </div>
+ <div >
+   <button type="submit" class="btn btn-primary">Search</button>
+ </div>
+</form>
+</div>
+

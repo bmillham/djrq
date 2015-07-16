@@ -1,0 +1,22 @@
+<%! from web.core import session %>
+
+<div>
+<form class="ajax" id="suggestions" data-async data-replace="" action="/suggestion" method="post">
+ <div class="form-group">
+  <label for="inputNick">Your Nick</label>
+  <input type="text" value="${session['nick']}" class="form-control" name="inputNick" required="true" id="inputNick" placeholder="Your Site Nick"/>
+   <label for="inputArtist">Artist</label>
+   <input type="text" class="form-control" name="inputArtist" id="inputArtist" placeholder="Artist Name (if known)"/>
+   <label for="inputAlbum">Album</label>
+   <input type="text" class="form-control" name="inputAlbum" id="inputAlbum" placeholder="Album Name (if known)"/>
+   <label for="inputTitle">Title</label>
+   <input type="text" class="form-control" name="inputTitle" id="inputTitle" placeholder="Song Name (if known)"/>
+   <label for="inputComment">Comment</label>
+     <textarea class="form-control" name="inputComment" id="inputComment" placeholder="Comment"/>
+   </div>
+ <div class="form-group">
+   <button type="submit" class="btn btn-primary">Submit Suggestion</button>
+ </div>
+</form>
+</div>
+

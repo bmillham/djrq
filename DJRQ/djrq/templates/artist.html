@@ -1,0 +1,45 @@
+## encoding: utf-8
+<%!
+from djrq.templates.helpers import colon, nt_from_now
+from datetime import datetime
+%>
+
+<%inherit file="djrq.templates.master"/>
+
+<%block name="mainpage">
+<div class="row">
+ <div class="col-md-15">
+  <table class="table table-bordered table-striped table-condensed">
+<%
+ try:
+  total_songs = songs.count()
+  viewing_new = True
+ except:
+  total_songs = len(songs)
+  viewing_new = False
+ endtry
+
+%>
+  <caption><h4 align="center">Artist: ${artist.fullname}&lrm; (${total_songs} tracks)
+% if viewing_new:
+  [View all tracks by ${artist}]
+% endif 
+ </h4></caption>
+ <tr>
+   <th colspan="2">Title</th><th>Album</th>
+   <th>Length</th><th>Last Played By</th>
+ </tr>
+% for row in songs:
+ <tr>
+ <td>${row.title}</td>
+ <td><%include file='djrq.templates.request_mistag_buttons', args='row=row'/></td>
+ <td>${row.album}</td>
+ <td>${row.time | colon}</td>
+ <td><%include file='djrq.templates.common.lastplay_info' args='played=row.played'/></td>
+ </tr>
+% endfor
+</table>
+</div>
+</div>
+</%block>
+

@@ -1,0 +1,21 @@
+<%page args="row, idx=0"/>
+<%
+    if len(row.new_requests) > 0:
+      title = "Requested: <b>%s</b>" % row.title
+      label = "Requested"
+      requested = True
+    else:
+      title = "Request: <b>%s</b>" % row.title
+      label = "&nbsp;&nbsp;Request&nbsp;&nbsp;"
+      requested = False
+%>
+<a href="/requestform/id/${row.id}" class="btn btn-xs ${'btn-primary' if not requested else 'btn-danger'} ajax" data-toggle="popover"
+            data-title="<b>${title | h}</b>"
+	    tabindex="${idx}"
+            id="rb_${row.id}"
+            data-placement="left auto"
+            data-trigger="click"
+            data-content="<div class='myform request-popover'><img src='/img/horse_7.gif'></div>"
+>
+<span id="rb_text_${row.id}">${label}</span>
+</a>

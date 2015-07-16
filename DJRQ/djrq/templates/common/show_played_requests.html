@@ -1,0 +1,18 @@
+<%page args="played_requests"/>
+<%!
+from djrq.templates.helpers import colon, nt_from_now
+%>
+<div class="row">
+ <div class="col-sm-12">
+  <table class="table table-bordered table-condensed table-hover">
+   <tbody>
+% for p in played_requests:
+    <tr>
+     <td>${p.name.replace("'", "&#39;")} ${p.eta | nt_from_now}</td>
+    <tr>
+% endfor
+   </tbody>
+  </table>
+ </div>
+</div>
+

@@ -1,0 +1,34 @@
+## encoding: utf-8
+<%!
+from djrq.templates.helpers import colon, nt_from_now
+from humanize import naturalsize
+from datetime import datetime
+import web
+%>
+<%inherit file="djrq.templates.master"/>
+<%block name="mainpage">
+% if settings_saved:
+ <h2>Settings Saved</h2>
+% endif
+<form  class="form-inline" id="siteoptionsform" action="/siteoptions" method="post">
+ <div>
+  <h5>Site Options</h5>
+ </div>
+ <div class="form-group">
+   <label for="theme">Select a Theme</label>
+   <select class="form-control" name="theme">
+%  for theme in themes:
+   	<option ${'selected' if theme == current_theme else ''} value="${theme}">${theme.capitalize()}</option>
+%  endfor
+   </select>
+ </div>
+ <div class="form-group">
+   <label for"lettercheck">Do Not Show Counts In Letter List:</label>
+   <input type="checkbox" ${'checked' if nolettercounts else ''} class="form-control" name="lettercheck" value="nolettercounts"/>
+ </div>
+ <br/>
+ <div >
+   <button type="submit" class="btn btn-primary">Submit</button>
+ </div>
+</form>
+</%block>
