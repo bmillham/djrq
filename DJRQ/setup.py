@@ -18,6 +18,7 @@ setup(name='djrq',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
+                        'WebCore < 2.0',
                         'Mako',
                         'Beaker',
                         'humanize', # for human numbers
