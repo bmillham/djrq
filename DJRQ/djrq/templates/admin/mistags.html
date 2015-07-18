@@ -11,6 +11,7 @@ from djrq.templates.helpers import nt_from_now
     <th rowspan="2">Action</th><th colspan="2">Artist</th>
     <th colspan="2" align="center">Album</th><th colspan="2" align="center">Title</th>
     <th rowspan="2">Reported By</th><th rowspan="2">Reported</th><th rowspan="2">Comments</th>
+    <th rowspan="2">Filename</th>
    </tr>
    <tr><th>Original</th><th>Corrected</th>
    	   <th>Original</th><th>Corrected</th><th>Original</th><th>Corrected</th>
@@ -19,18 +20,16 @@ from djrq.templates.helpers import nt_from_now
    <tr>
    	<td>
    		<a href="/admin/mistags/delete/${mistag.id}" class="btn btn-xs btn-primary">
-		 <span>Corrected</span>
+		 <span>Ignore Mistag</span>
 		</a>
    	</td>
-   	<td>${mistag.song.artist.fullname}</td>
-   	<td>${mistag.artist}</td>
-   	<td>${mistag.song.album.fullname}</td>
-   	<td>${mistag.album}</td>
-   	<td>${mistag.song.title}</td>
-   	<td>${mistag.title}</td>
+   	<%include file="djrq.templates.admin.mistag_diff", args="original=mistag.song.artist.fullname, reported=mistag.artist"/>
+	<%include file="djrq.templates.admin.mistag_diff", args="original=mistag.song.album.fullname, reported=mistag.album"/>
+	<%include file="djrq.templates.admin.mistag_diff", args="original=mistag.song.title, reported=mistag.title"/>
    	<td>${mistag.reported_by}</td>
    	<td>${mistag.reported | nt_from_now}</td>
    	<td>${mistag.comments}</td>
+   	<td>${mistag.song.file}</td>
    </tr>
 % endfor
   </table>
