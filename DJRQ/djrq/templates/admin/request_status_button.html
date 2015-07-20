@@ -1,0 +1,13 @@
+<%page args="row"/>
+<div class="btn-group">
+ <button type="button" class="btn btn-xs btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  ${row.status.capitalize()} <span class="caret"></span>
+ </button>
+ <ul class="dropdown-menu">
+% for s in ('new', 'ignored', 'pending', 'played', 'delete'):
+%  if s != row.status:
+  <li><a href="/admin/requests/change_status/${row.id}/${s}">${s.capitalize()}</a></li>
+%  endif
+% endfor
+ </ul>
+</div>

@@ -1,9 +1,10 @@
 import djrq.middleware
 import web
 from djrq.model import *
+from ..basecontroller import BaseController
 
-class MistagsController(web.core.Controller):
-    def __after__(self, *args, **kw):
+class MistagsController(BaseController):
+    def __after__(self, rkw, *args, **kw):
         mistags = session.query(Mistags)
         for m in mistags:
             corrected = True
@@ -16,12 +17,12 @@ class MistagsController(web.core.Controller):
             if corrected:
                 session.delete(m)
         return super(MistagsController, self).__after__(('djrq.templates.admin.mistags', 
-                                                             dict(mistags=mistags)))
+                                                             dict(rkw, mistags=mistags)))
 
     def index(self, *args, **kw):
-        pass
+        return kw
 
     def delete(self, *args, **kw):
         delmistag = session.query(Mistags).filter(Mistags.id==args[0]).one()
         session.delete(delmistag)
-        pass
+        return kw

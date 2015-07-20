@@ -1,0 +1,19 @@
+<%!
+import web
+%>
+<div class="btn-group">
+ <button type="button" class="btn btn-xs btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <% cv = web.core.session['request_view'][0] %>
+  Current View: ${cv.capitalize() if cv != 'np' else 'New/Pending'} <span class="caret"></span>
+ </button>
+ <ul class="dropdown-menu">
+% for s in ('np', 'new', 'ignored', 'pending', 'played'):
+%  if s != cv:
+  <li><a href="/admin/requests/change_view/${s}">${s.capitalize() if s != 'np' else 'New/Pending'}
+  	  <span class="badge" style="float: right">${all_requests[s]['request_count']}</span>
+  	  </a>
+   </li>
+%  endif
+% endfor
+ </ul>
+</div>

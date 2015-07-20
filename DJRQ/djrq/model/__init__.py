@@ -182,6 +182,12 @@ def get_new_pending_requests_info():
                   func.sum(Song.time).label('request_length')).\
                   join(Song).filter(or_(RequestList.status=="new", RequestList.status=='pending')).one()
 
+def get_all_requests_info():
+    return session.query(func.count(RequestList.status).label('request_count'),
+                         RequestList.status,
+                         func.sum(Song.time).label('request_length')).\
+                         join(Song).group_by(RequestList.status)
+
 def get_last_played(catalogs, limit=50):
     return session.query(func.count(Played.date_played), func.avg(Song.time), Played).join(Song).filter(Song.catalog.in_(catalogs)).group_by(Played.date_played).order_by(Played.date_played.desc()).limit(limit)
 
