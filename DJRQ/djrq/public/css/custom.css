@@ -1,6 +1,3 @@
-@grid-float-breakpoint: 900px;
-@media (min-width: 1000px)
-
 .rightMenu {
     position:relative;
     float:right;
