@@ -62,12 +62,9 @@
       </div>
      </form>
     </li>
-    <li><a href="/admin"><span class="glyphicon glyphicon-cog"></span></a></li>
-    <li><a data-toggle="popover" data-title="Listener Statistics"
-	       data-placement="bottom"
-	       data-content='<%include file="djrq.templates.common.listener_statistics"/>'
-	       href="#"><span class="glyphicon glyphicon-headphones"></span></a></li>
+    <li><a href="/admin" class="navbar-right"><span class="glyphicon glyphicon-cog"></span></a></li> 
    </ul>
+   <p class="navbar-text navbar-right"><span class="glyphicon glyphicon-headphones"></span> ${listeners.current}/${listeners.max}</p>
   </div><!--/.nav-collapse -->
 </div>
 </nav>
