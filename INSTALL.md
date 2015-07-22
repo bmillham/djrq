@@ -44,3 +44,5 @@ Now point your web browser to localhost:8080 to view your site!
 
 Setting up to run under nginX in production mode:
 COMING SOON!
+
+nginx sample config file is in nginx.example.conf
