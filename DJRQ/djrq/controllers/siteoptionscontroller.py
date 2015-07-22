@@ -6,8 +6,8 @@ from basecontroller import BaseController
 
 class SiteOptionsController(web.core.HTTPMethod):
     def __after__(self, result, *args, **kw):
-        themes = ('bootstrap', 'cerulean', 'cosmo', 'cyborg', 
-                  'lumen', 'sandstone', 'simplex', 'spacelab', 'superhero',
+        themes = ('bootstrap', 'cerulean', 'cosmo', 'cyborg', 'darkly', 'flatly', 'journal', 
+                  'lumen', 'paper', 'sandstone', 'simplex', 'slate', 'spacelab', 'superhero',
                   'united', 'yeti')
         if 'theme' in web.core.session:
             current_theme = web.core.session['theme']
