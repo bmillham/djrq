@@ -8,6 +8,9 @@ class MistagsController(BaseController):
         mistags = session.query(Mistags)
         for m in mistags:
             corrected = True
+            if m.song is None: # Mistag was probably fixed, or the track was removed
+                session.delete(m)
+                continue
             if m.song.artist.fullname != m.artist:
                 corrected = False
             if m.song.album.fullname != m.album:
