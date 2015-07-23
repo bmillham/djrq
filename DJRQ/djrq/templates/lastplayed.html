@@ -14,8 +14,15 @@ from humanize import naturaltime
 <table class="table table-bordered table-striped table-condensed">
  <thead>
  <caption><h3 align="center">Last Played</h3></caption>
- <tr><th>Artist</th><th>Title</th><th>Album</th><th>Length</th>
-  <th>Last Played By</th>
+ <tr><th>Artist</th><th>Title</th><th>Album</th>
+  <th class="hidden-xs">
+  	Length
+  </th>
+  <th>
+   <span class="hidden-xs">Last Played By</span>
+   <span class="visible-xs-block">Plays</span>
+  </th>
+  
  </tr>
 </thead>
 <tbody>
@@ -37,10 +44,12 @@ from humanize import naturaltime
        ${row.song.album}
 %    endif
       </td>
-      <td>\
+      <td class="hidden-xs" align="right">\
        ${'~' if played_count>1 else ''}${avg_time if played_count > 1 else row.song.time | colon}\
       </td>
-      <td><%include file='djrq.templates.common.lastplay_info' args='played=row.song.played'/></td>
+      <td>
+      	<%include file='djrq.templates.common.lastplay_info' args='played=row.song.played'/>
+      </td>
     </tr>
 % endfor
 </tbody>

@@ -27,14 +27,18 @@ from datetime import datetime
  </h4></caption>
  <tr>
    <th colspan="2">Title</th><th>Album</th>
-   <th>Length</th><th>Last Played By</th>
+   <th class="hidden-xs">Length</th>
+   <th>
+   	<span class="hidden-xs">Last Played By</span>
+   	<span class="visible-xs-block">Plays</span>
+   </th>
  </tr>
 % for row in songs:
  <tr>
  <td>${row.title}</td>
  <td><%include file='djrq.templates.request_mistag_buttons', args='row=row'/></td>
  <td>${row.album}</td>
- <td>${row.time | colon}</td>
+ <td class="hidden-xs">${row.time | colon}</td>
  <td><%include file='djrq.templates.common.lastplay_info' args='played=row.played'/></td>
  </tr>
 % endfor

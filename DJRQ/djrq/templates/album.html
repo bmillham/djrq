@@ -25,7 +25,11 @@ $(document).ready(function(){
  <caption><h4 align="center">Album: ${album.fullname}&lrm; (${len(album.songs)} tracks)</h4></caption>
  <tr>
    <th>Artist</th><th>Track</th><th colspan=2>Title</th>
-   <th>Length</th><th>Last Played By</th>
+   <th class="hidden-xs">Length</th>
+   <th>
+   	<span class="hidden-xs">Last Played By</span>
+   	<span class="visible-xs-block">Plays</span>
+   </th>
  </tr>
 % for row in album.songs:
 <%
@@ -43,7 +47,7 @@ $(document).ready(function(){
  <td>${row.title}</td>
   <td><%include file='djrq.templates.request_mistag_buttons' args="row=row, idx=idx"/>
   </td>
- <td>${row.time | colon}</td>
+ <td class="hidden-xs">${row.time | colon}</td>
  <td><%include file='djrq.templates.common.lastplay_info' args='played=row.played'/></td>
  </tr>
 % endfor
