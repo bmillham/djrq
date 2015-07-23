@@ -14,9 +14,9 @@ from djrq.templates.helpers import nt_from_now
 %  if play_count > 1:
  <a href="javascript://" data-toggle="popover" data-placement="left" title="Played ${play_count} times"
     data-content='<%include file="djrq.templates.common.show_plays" args="played=played"/>'>
- <span class="badge">${play_count}</span></a>
+ <span class="badge" style="float: right">${play_count}</span></a>
 %  else:
-  <span class="badge">${play_count}</span>
+  <span class="badge" style="float: right">${play_count}</span>
 %  endif
 % endif
 </span>

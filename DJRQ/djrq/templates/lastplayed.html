@@ -37,7 +37,7 @@ from humanize import naturaltime
        ${row.song.album}
 %    endif
       </td>
-      <td>\
+      <td align="right">\
        ${'~' if played_count>1 else ''}${avg_time if played_count > 1 else row.song.time | colon}\
       </td>
       <td><%include file='djrq.templates.common.lastplay_info' args='played=row.song.played'/></td>
