@@ -14,7 +14,7 @@ from web.core import session
  endif
 %>
 <nav class="container theme-showcase" role="main">
-	<h4 align=center>Browsing by ${browse_by.capitalize()}
+	<%doc><h4 align=center>Browsing by ${browse_by.capitalize()}
    	[\
 % if browse_by == 'artist':
 	 <a href="/browse/album">Browse by Album</a>\
@@ -22,7 +22,15 @@ from web.core import session
 	 <a href="/browse/artist">Browse by Artist</a>\
 % endif
    	]
-    </h4> 
+ </h4></%doc>
+  <div class="btn-group">
+  <button type="button" class="center-block btn btn-md btn-block btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Browsing By ${browse_by.capitalize()} <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a href="/browse/${'artist' if browse_by=='album' else 'album'}">Browse by ${'Artist' if browse_by=='album' else 'Album'}</a></li>
+  </ul>
+ </div>
 <div class="row">
 <ul class="nav nav-pills col-xs-12" >
 % for letter, count in letters:
