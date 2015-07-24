@@ -23,14 +23,18 @@ from web.core import session
 % endif
    	]
  </h4></%doc>
+ <table class="table">
+  <caption align='center'><h2 align="center">
   <div class="btn-group">
-  <button type="button" class="center-block btn btn-md btn-block btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  <button type="button" class="center-block btn btn-lg btn-block btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
     Browsing By ${browse_by.capitalize()} <span class="caret"></span>
   </button>
   <ul class="dropdown-menu">
     <li><a href="/browse/${'artist' if browse_by=='album' else 'album'}">Browse by ${'Artist' if browse_by=='album' else 'Album'}</a></li>
   </ul>
  </div>
+ </caption></h2>
+ </table>
 <div class="row">
 <ul class="nav nav-pills col-xs-12" >
 % for letter, count in letters:
