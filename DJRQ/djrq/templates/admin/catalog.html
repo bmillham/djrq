@@ -1,0 +1,32 @@
+<%!
+from djrq.templates.helpers import nt_from_now
+%>
+<%inherit file="djrq.templates.admin.master"/>
+<%block name="mainpage">
+<form action="/admin/catalog" id="catalogform" method="post">
+<div class="row">
+ <div class="col-sm-15">
+  <table class="table table-bordered table-striped table-condensed">
+   <caption><h4 align="center">Catalogs ${status if status is not None else ''}</h4></caption>
+   <tr>
+    <th>Enabled</th>
+    <th>Catalog</th>
+    <th>Last Update</th>
+   </tr>
+% for catalog in catalogs:
+   <tr class="form-group">
+   	<td>
+   		<input${' checked' if str(catalog.id) in selected_catalogs else ''} class="form-control input-sm" type="checkbox" name="cat_group" value="${catalog.id}" class="form-control"/>
+   	</td>
+   	<td>${catalog.name}</td>
+   	<td>${catalog.last_update | nt_from_now}</td>
+   </tr>
+% endfor
+  <tr>
+   <td align="center" colspan="3"><button type="submit" class="btn btn-sm btn-primary">Save Catalog Selection</button></td>
+  </tr>
+  </table>
+ </div>
+</div>
+</form>
+</%block>

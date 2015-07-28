@@ -10,8 +10,10 @@ from ..basecontroller import BaseController
 from suggestionscontroller import SuggestionsController
 from mistagscontroller import MistagsController
 from requestscontroller import RequestsController
+from options.catalogcontroller import CatalogController
 
 class Admin(BaseController):
     suggestions = SuggestionsController()
     mistags = MistagsController()
     requests = index = RequestsController()
+    catalog = CatalogController()

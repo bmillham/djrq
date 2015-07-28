@@ -44,14 +44,31 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-           <a class="navbar-brand" href="/admin"><span class="glyphicon glyphicon-cog"></span> Admin</a>
+           <a class="navbar-brand" href="/admin"><span class="glyphicon glyphicon-cog"></span> Admin Requests <span class='badge' id="request_count">${requests_count}</span></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-		    <li><a href="/admin/requests">Requests <span class='badge' id="request_count">${requests_count}</span></a></li>
 		    <li><a href="/admin/suggestions">Suggestions</a></li>
 	    	<li><a href="/admin/mistags">Mistags</a></li>
-	    	<li><a href="/"><span class="glyphicon glyphicon-home"></span></a></li>
+	    	<li class="dropdown">
+     		 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-edit"></span> <span class="caret"></span></a>
+     		 <ul class="dropdown-menu" role="menu">
+      		  <%include file='djrq.templates.menuitem' args='title="Last Played", link="/options/lastplayed"' />
+      		  <%include file='djrq.templates.menuitem', args='title="Requests", link="/options/requests"' />
+      		  <%include file='djrq.templates.menuitem', args='title="Catalog Selection", link="/catalog"' />
+     		 </ul>
+    		</li>
+    		<li class="dropdown">
+     		 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-file"></span> <span class="caret"></span></a>
+     		 <ul class="dropdown-menu" role="menu">
+      		  <%include file='djrq.templates.menuitem' args='title="Upload/Download Private Files", link="/upload/private"' />
+      		  <%include file='djrq.templates.menuitem', args='title="Upload/Download Shared Files", link="/upload/shared"' />
+     		 </ul>
+    		</li>
+    		<li><a href="/admin/sitenews"><span class="glyphicon glyphicon-bullhorn"></span></a></li>
+	    	<li class="navbar-right">
+	    	 <a href="/"><span class="glyphicon glyphicon-home"></span></a>
+	    	</li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
