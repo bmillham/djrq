@@ -5,6 +5,7 @@ from sqlalchemy import *
 from sqlalchemy.sql import func, or_
 from sqlalchemy.types import TIMESTAMP
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy_fulltext import FullText, FullTextSearch
 from time import time
 import markupsafe
 import paste
@@ -22,11 +23,15 @@ from song import Song"""
 
 class Album(Base):
     __tablename__ = 'album'
+    __fulltext_columns__ = ('name',)
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    prefix = Column(String)
+    name = Column(String(255))
+    prefix = Column(String(32))
     year = Column(Integer)
     disk = Column(SmallInteger)
+    Index(name)
+    Index(prefix)
+    __table_args__ = {'mysql_engine':'MyISAM'}
 
     def __unicode__(self):
         return u'<a href="/album/id/{}">{}</a>'.format(self.id, self.fullname)
@@ -47,10 +52,14 @@ class Album(Base):
 
 class Artist(Base):
     __tablename__ = 'artist'
+    __fulltext_columns__ = ('name',)
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    prefix = Column(String)
-
+    name = Column(String(255))
+    prefix = Column(String(32))
+    Index(name)
+    Index(prefix)
+    
+    __table_args__ = {'mysql_engine':'MyISAM'}
     #def __repr__(self):
     #    return "{} |||| {} |||| {}".format(self.id, self.fullname, 'artist')
 
@@ -73,21 +82,23 @@ class Artist(Base):
 
 class Mistags(Base):
     __tablename__ = 'mistags'
+    __table_args__ = {'mysql_engine':'MyISAM'}
     id = Column(Integer, primary_key=True)
     track_id = Column(Integer, ForeignKey('song.id'))
-    reported_by = Column(String)
+    reported_by = Column(String(255))
     reported = Column(TIMESTAMP)
-    artist = Column(String)
-    album = Column(String)
-    title = Column(String)
-    comments = Column(String)
+    artist = Column(String(255))
+    album = Column(String(255))
+    title = Column(String(255))
+    comments = Column(String(255))
 
 class Played(Base):
     __tablename__ = 'played'
+    __table_args__ = {'mysql_engine':'MyISAM'}
     played_id = Column(Integer, primary_key=True)
     track_id = Column(Integer, ForeignKey('song.id'))
     date_played = Column(DateTime)
-    played_by = Column(String)
+    played_by = Column(String(255))
     played_by_me = Column(Integer)
 
     def get_multi_albums(self):
@@ -95,30 +106,34 @@ class Played(Base):
 
 class RequestList(Base):
     __tablename__= 'requestlist'
+    __table_args__ = {'mysql_engine':'MyISAM'}
     id = Column(Integer, primary_key=True)
     song_id = Column('songID', Integer, ForeignKey('song.id'))
     t_stamp = Column(DateTime)
-    host = Column(String)
-    msg = Column(String)
-    name = Column(String)
+    host = Column(String(255))
+    msg = Column(String(255))
+    name = Column(String(255))
     code = Column(Integer)
     eta = Column('ETA', DateTime)
     status = Column(Enum('played', 'ignored', 'pending', 'new'))
 
 class Song(Base):
     __tablename__ = 'song'
+    __fulltext_columns__ = ('title,')
+
     id = Column(Integer, primary_key=True)
-    file = Column(String)
+    file = Column(String(512))
     catalog = Column(Integer)
     album_id  = Column("album", Integer, ForeignKey('album.id'))
     year = Column(Integer)
     artist_id = Column("artist", Integer, ForeignKey('artist.id'))
-    title = Column(String)
+    title = Column(String(255))
     size = Column(Integer)
     time = Column(SmallInteger)
     track = Column(SmallInteger)
     #was_played = Column('played', SmallInteger)
     addition_time = Column(Integer)
+    __table_args__ = {'mysql_engine':'MyISAM'}
     album = relationship("Album", backref=backref('songs', order_by=track))
     artist = relationship("Artist", backref=backref('songs', order_by=title))
     played = relationship("Played", backref=backref('song'), order_by=Played.date_played.desc())
@@ -130,41 +145,40 @@ class Song(Base):
                                 primaryjoin="and_(RequestList.song_id==Song.id, or_(RequestList.status == 'new', RequestList.status=='pending'))")
     mistags = relationship("Mistags", backref=backref('song'))
 
-
-
 class Suggestions(Base):
     __tablename__ = 'suggestions'
+    __table_args__ = {'mysql_engine':'MyISAM'}
     id = Column(Integer, primary_key=True)
-    title = Column(String)
-    album = Column(String)
-    artist = Column(String)
-    suggestor = Column(String)
-    comments = Column(String)
+    title = Column(String(255))
+    album = Column(String(255))
+    artist = Column(String(255))
+    suggestor = Column(String(255))
+    comments = Column(String(255))
 
 class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
-    username = Column(String)
-    fullname = Column(String)
-    email = Column(String)
-    website = Column(String)
-    apikey = Column(String)
+    username = Column(String(255))
+    fullname = Column(String(255))
+    email = Column(String(255))
+    website = Column(String(255))
+    apikey = Column(String(255))
     password = Column(String(64))
     access = Column(Integer())
     disabled = Column(Integer())
     last_seen = Column(Integer())
     create_date = Column(Integer())
-    validation = Column(String)
+    validation = Column(String(255))
 
 class SiteOptions(Base):
     __tablename__ = "site_options"
     id = Column(Integer, primary_key=True)
-    show_title = Column(String)
-    show_time = Column(String)
-    show_end = Column(String)
-    limit_requests = Column(String)
+    show_title = Column(String(255))
+    show_time = Column(String(255))
+    show_end = Column(String(255))
+    limit_requests = Column(String(255))
     offset = Column(Integer)
-    catalog = Column(String)
+    catalog = Column(String(255))
 
 class Listeners(Base):
     __tablename__ = "listeners"
