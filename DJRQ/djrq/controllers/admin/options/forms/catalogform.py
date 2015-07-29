@@ -1,21 +1,17 @@
 import djrq.middleware
 import web
 from djrq.model import *
-from ...basecontroller import BaseController
 
-class CatalogController(web.core.HTTPMethod):
+class CatalogForm(web.core.HTTPMethod):
     def __before__(self, *args, **kw):
         options = session.query(SiteOptions).one()
         kw['options'] = options
-        kw['selected_catalogs'] = options.catalog.split(",")
-        kw['requests_count'], kw['requests_length'] = get_new_pending_requests_info()
-        kw['listeners'] = session.query(Listeners).first()
         kw['catalogs'] = session.query(Catalog)
-        return super(CatalogController, self).__before__(*args, **kw)
+        return super(CatalogForm, self).__before__(*args, **kw)
 
     def __after__(self, result, *args, **kw):
         kw.update(result)
-        return super(CatalogController, self).__after__(('djrq.templates.admin.catalog', kw))
+        return super(CatalogForm, self).__after__(('djrq.templates.admin.catalog', kw))
                                                              
     def get(self, *args, **kw):
         return dict(status=None)
