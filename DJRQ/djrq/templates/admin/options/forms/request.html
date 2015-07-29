@@ -1,0 +1,35 @@
+<%!
+from djrq.templates.helpers import nt_from_now
+%>
+<%inherit file="djrq.templates.admin.master"/>
+<%block name="mainpage">
+<div class="col-sm-offset-5 col-sm-10">
+ <h4>Request Options ${status if status is not None else ''}</h4>
+</div>
+<form class="form-horizontal" action="requests" id="requestfoform" method="post">
+<div class="form-group">
+ <label for="requestlimitfield" class="col-sm-5 control-label">
+  Don't allow requests for tracks played by me within the last</label>
+ <div class="col-sm-3">
+  <select class="form-control id="requestlimitfield" name="requestlimitfield"">
+% for v in range(-1,25):
+   <option value="${v}"${' selected' if v == limit_requests else ''}>\
+%  if v == -1:
+    Never Allow Requests\
+%  elif v == 0:
+    Always Allow Requests\
+%  else:
+    ${v} Hours\
+%  endif
+   </option>
+% endfor
+  </select>
+ </div>
+</div>
+<div class="form-group">
+ <div class="col-sm-offset-5 col-sm-10">
+  <button type="submit" class="btn btn-default">Save Request Options</button>
+ </div>
+</div>
+</form>
+</%block>
