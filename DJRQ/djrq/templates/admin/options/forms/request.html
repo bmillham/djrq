@@ -14,13 +14,10 @@ from djrq.templates.helpers import nt_from_now
   <select class="form-control id="requestlimitfield" name="requestlimitfield"">
 % for v in range(-1,25):
    <option value="${v}"${' selected' if v == limit_requests else ''}>\
-%  if v == -1:
-    Never Allow Requests\
-%  elif v == 0:
-    Always Allow Requests\
-%  else:
-    ${v} Hours\
-%  endif
+   	${'Never Allow Requests' if v==-1 else ''}
+   	${'Always Allow Requests' if v==0 else ''}
+   	${'Hour' if v==1 else ''}
+   	${'%d Hours'%v if v>1 else ''}
    </option>
 % endfor
   </select>
