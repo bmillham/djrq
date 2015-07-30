@@ -30,7 +30,7 @@ import djrq
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/eldarion-ajax.min.js"></script>
     <link href="/css/theme.css" rel="stylesheet">
-    <link href="/css/custom.css" rel="stylesheet">
+    <%doc><link href="/css/custom.css" rel="stylesheet"></%doc>
     <script type="text/javascript">
       $(document).ready(function(){
       	$('[data-toggle="popover"]').popover({
@@ -64,6 +64,10 @@ import djrq
         height: 390px;
         overflow: auto;
       }
+      body {padding: 70px;}
+% if show_title != '':
+      body { padding-bottom: 80px; }
+% endif
     </style>
   </head>
   <body role="document">
@@ -79,5 +83,13 @@ import djrq
     <h6 align="center">Important disclaimer: This site is for informational purposes only. No music files are hosted
     	on this site.</h6>
     </p>
+% if show_title != '':
+    <nav class="navbar navbar-inverse navbar-fixed-bottom">
+  	 <div class="container-fluid">
+      <p class="navbar-brand">Show Title: ${show_title}</p>
+      <p class="navbar-brand navbar-right">Start Time: ${start_time}</p>
+     </div>
+    </nav>
+% endif
   </body>
 </html>

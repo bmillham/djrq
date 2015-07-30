@@ -2,8 +2,7 @@
 <%page args='current_page'/>
 <!-- Fixed navbar -->
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-<div class="container-fluid">
- <div class="container btn-group" style="width:790px !important">
+<div class="container">
   <div class="navbar-header">
    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" >
     <span class="sr-only">Toggle navigation</span>
@@ -13,11 +12,8 @@
    </button>
    <a class="navbar-brand" href="/"><span class="glyphicon glyphicon-music"></span>DJ-bmillham</a>
   </div>
-
   <div id="navbar" class="navbar-collapse collapse">
-
    <ul class="nav navbar-nav">
-
 	<li class="dropdown${' active' if current_page.startswith('/browse') else ''}">
      <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-eye-open"></span> <span class="caret"></span></a>
      <ul class="dropdown-menu" role="menu">
@@ -26,20 +22,27 @@
      </ul>
     </li>
     <%include file='djrq.templates.menuitem', args='title="Requests ", link="/requests", badge=("request_count", requests_count)' />
-    <li class="dropdown">
-     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">More.. <span class="caret"></span></a>
+    <li class="dropdown hidden-lg">
+     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-list"></span><span class="caret"></span></a>
      <ul class="dropdown-menu" role="menu">
       <li><a href="/stats">Library Statistics</a></li>
-      <%include file='djrq.templates.menuitem' args='title="What&#39;s New", link="/whatsnew"' />
+      <%include file='djrq.templates.menuitem' args='title="What&#39;s New", link="/whatsnew", mclass="hidden-lg"' />
       <%include file='djrq.templates.menuitem' args='title="Site Options", link="/siteoptions"' />
-      <%doc><li role="separator" class="divider"></li>
-      <%include file='djrq.templates.menuitem', args='title="Switch Themes", link="/theme"' /></%doc>
      </ul>
     </li>
-    <li><a data-toggle="popover" data-title="Suggest A Song"
+    <li class="hidden-xs hidden-sm hidden-md"><a href="/stats">Library Statistics</a></li>
+    <li class="hidden-xs hidden-sm hidden-md"><%include file='djrq.templates.menuitem' args='title="What&#39;s New", link="/whatsnew", mclass="hidden-xs hidden-sm hidden-md"' /></li>
+    <li class="hidden-xs hidden-sm"><a data-toggle="popover" data-title="Suggest A Song"
 	       data-placement="bottom"
 	       data-content='<%include file="djrq.templates.forms.suggestion_form"/>'
-	       href="#">Suggest Song</a></li>
+	       href="#">Suggest Song</a>
+	</li>
+	<li class="hidden-md hidden-lg"><a data-toggle="popover" data-title="Suggest A Song"
+	       data-placement="bottom"
+	       data-content='<%include file="djrq.templates.forms.suggestion_form"/>'
+	       href="#"><span class="glyphicon glyphicon-plus"></span></a>
+	</li>
+	<%include file='djrq.templates.menuitem' args='title="Site Options", link="/siteoptions", mclass="hidden-xs hidden-sm hidden-md"' />
     <li>
      <a data-toggle="popover" data-title="Advanced Search"
         data-placement="bottom"
@@ -55,13 +58,9 @@
       </div>
      </form>
     </li>
-    <li><a href="/admin"><span class="glyphicon glyphicon-cog"></span></a></li>
-    <li><a data-toggle="popover" data-title="Listener Statistics"
-	       data-placement="bottom"
-	       data-content='<%include file="djrq.templates.common.listener_statistics"/>'
-	       href="#"><span class="glyphicon glyphicon-headphones"></span></a></li>
+    <li><a href="/admin" class="navbar-right"><span class="glyphicon glyphicon-cog"></span></a></li> 
    </ul>
+   <p class="navbar-text navbar-right"><span class="glyphicon glyphicon-headphones"></span> ${listeners.current}/${listeners.max}</p>
   </div><!--/.nav-collapse -->
- </div>
 </div>
 </nav>

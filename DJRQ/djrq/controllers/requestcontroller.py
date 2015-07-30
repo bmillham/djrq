@@ -11,4 +11,7 @@ class RequestController(BaseController):
                                                    listeners=kw['listeners'],
                                                    requests_length=kw['requests_length'],
                                                    requests_count=kw['requests_count'],
+                                                   limit_requests=kw['limit_requests'],
+                                                   show_title=kw['show_title'],
+                                                   start_time=kw['start_time'],
                                                   )

@@ -10,13 +10,11 @@ from djrq.templates.helpers import nt_from_now
 % if play_count == 0:
  &nbsp;
 % else:
- ${played[0].played_by} ${played[0].date_played | nt_from_now}
-%  if play_count > 1:
- <a href="javascript://" data-toggle="popover" data-placement="left" title="Played ${play_count} times"
+  <a href="javascript://" data-toggle="popover" data-placement="left" title="Played ${play_count} times"
     data-content='<%include file="djrq.templates.common.show_plays" args="played=played"/>'>
- <span class="badge">${play_count}</span></a>
-%  else:
+  <span class="hidden-xs">${played[0].played_by}
+  ${played[0].date_played | nt_from_now}</span>
   <span class="badge">${play_count}</span>
-%  endif
+  </a>
 % endif
 </span>

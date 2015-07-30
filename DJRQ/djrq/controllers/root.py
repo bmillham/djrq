@@ -47,5 +47,8 @@ class RootController(BaseController):
         return 'djrq/templates/lastplayed.html', {'last_played': last_played,
                                                   'current_page': "last_played",
                                                   'listeners': kwargs['listeners'],
+                                                  'show_title': kwargs['show_title'],
+                                                  'start_time': kwargs['start_time'],
+                                                  'limit_requests': kwargs['limit_requests'],
                                                   'requests_count': kwargs['requests_count']}
 

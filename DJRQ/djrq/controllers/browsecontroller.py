@@ -24,6 +24,9 @@ class BrowseController(BaseController):
                 #browseletter = result['letter'],
                 requests_count = kw['requests_count'],
                 listeners=kw['listeners'],
+                limit_requests=kw['limit_requests'],
+                show_title=kw['show_title'],
+                start_time=kw['start_time'],
                 #requests_count = get_new_pending_requests_info()[0],
             ))
         return super(BrowseController, self).__after__(result, *args, **kw)

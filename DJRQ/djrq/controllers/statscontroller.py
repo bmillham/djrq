@@ -26,6 +26,9 @@ class StatsController(BaseController):
                                                   total_albums = total_albums,
                                                   current_page="stats",
                                                   requests_count=kwargs['requests_count'],
+                                                  limit_requests=kwargs['limit_requests'],
+                                                  show_title=kwargs['show_title'],
+                                                  start_time=kwargs['start_time'],
                                                   topartists=topartists,
                                                   mostrequested=mostrequested,
                                                   toprequestors=toprequestors)

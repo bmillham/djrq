@@ -1,21 +1,38 @@
 <%page args="row, idx=0"/>
+<%!
+ from datetime import datetime
+ import time
+%>
 <%
+    justplayed = False
+    try:
+    	lp = time.mktime(row.played[0].date_played.timetuple())
+    except:
+    	lp = 0
+    max_time = int(time.time()) - (limit_requests * 60 * 60)
+    if lp > max_time:
+    	justplayed = True
     if len(row.new_requests) > 0:
       title = "Requested: <b>%s</b>" % row.title
       label = "Requested"
       requested = True
     else:
       title = "Request: <b>%s</b>" % row.title
-      label = "&nbsp;&nbsp;Request&nbsp;&nbsp;"
+      label = "Request"
       requested = False
+    if limit_requests == -1:
+      label = "No Requests"
+    elif justplayed:
+      label = "Played"
 %>
-<a href="/requestform/id/${row.id}" class="btn btn-xs ${'btn-primary' if not requested else 'btn-danger'} ajax" data-toggle="popover"
+<a href="/requestform/id/${row.id}" class="${'disabled' if justplayed or limit_requests==-1 else ''} btn btn-xs ${'btn-primary' if not requested else 'btn-danger'} ajax" data-toggle="popover"
             data-title="<b>${title | h}</b>"
 	    tabindex="${idx}"
             id="rb_${row.id}"
             data-placement="left auto"
             data-trigger="click"
             data-content="<div class='myform request-popover'><img src='/img/horse_7.gif'></div>"
->
-<span id="rb_text_${row.id}">${label}</span>
+            style="width: ${80 if limit_requests==-1 else 70}px"
+>\
+<span id="rb_text_${row.id}">${label}</span>\
 </a>

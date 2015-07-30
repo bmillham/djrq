@@ -13,7 +13,7 @@ from datetime import datetime
 <table class="table table-bordered table-striped table-condensed">
  <caption>
   <h3 align="center">
-  	${whatsnew_stats[0]} tracks added since ${start_time | nt_from_now}
+  	${whatsnew_stats[0]} tracks added since ${new_start_time | nt_from_now}
 % if whatsnew_stats[0] > 0:
   	Total Size: ${whatsnew_stats[2] | naturalsize},
     Total Time: ${whatsnew_stats[1] | colon}
