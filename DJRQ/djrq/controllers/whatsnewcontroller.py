@@ -14,6 +14,9 @@ class WhatsNewController(BaseController):
                                                requests_length=kwargs['requests_length'],
                                                listeners=kwargs['listeners'],
                                                whatsnew=wn,
-                                               start_time=start_time,
-                                               whatsnew_stats=wn_stats
+                                               new_start_time=start_time,
+                                               whatsnew_stats=wn_stats,
+                                               limit_requests=kwargs['limit_requests'],
+                                               show_title=kwargs['show_title'],
+                                               start_time=kwargs['start_time'],
                                               )
