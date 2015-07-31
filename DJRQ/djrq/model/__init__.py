@@ -166,12 +166,47 @@ class User(Base):
     email = Column(String(255))
     website = Column(String(255))
     apikey = Column(String(255))
-    password = Column(String(64))
+    _password = Column('password', String(128), nullable=False)
     access = Column(Integer())
     disabled = Column(Integer())
     last_seen = Column(Integer())
     create_date = Column(Integer())
     validation = Column(String(255))
+
+    def _set_password(self, value):
+        if value is None:
+            self._password = None
+            return
+
+        import hashlib
+        encoder = hashlib.new('sha512')
+        encoder.update(value)
+        self._password = encoder.hexdigest()
+
+    password = synonym('_password', descriptor=property(lambda self: self._password, _set_password))
+
+    @classmethod
+    def authenticate(cls, identifier, password=None, force=False):
+        if not force and not password:
+            return None
+
+        try:
+            user = cls.get(identifier)
+
+        except:
+            return None
+
+        if force:
+            return user.id, user
+
+        import hashlib
+        encoder = hashlib.new('sha512')
+        encoder.update(password)
+
+        if user.password is None or user.password != encoder.hexdigest():
+            return None
+
+        return user.id, user
 
 class SiteOptions(Base):
     __tablename__ = "site_options"
@@ -222,12 +257,18 @@ class Account(Base):
         return set(perms)
 
     @classmethod
+    def lookup(cls, identifier):
+        user = session.query(cls).filter(cls.id==identifier).one()
+        return user
+
+    @classmethod
     def authenticate(cls, identifier, password=None, force=False):
         if not force and not password:
             return None
 
         try:
-            user = cls.get(identifier)
+            #user = cls.get(identifier)
+            user = session.query(cls).filter(cls.name==identifier).one()
 
         except:
             return None
@@ -238,10 +279,8 @@ class Account(Base):
         import hashlib
         encoder = hashlib.new('sha512')
         encoder.update(password)
-
         if user.password is None or user.password != encoder.hexdigest():
             return None
-
         return user.id, user
 
 

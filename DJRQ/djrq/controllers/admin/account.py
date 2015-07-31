@@ -32,7 +32,6 @@ class RecoverMethod(web.core.HTTPMethod):
 
 recover = RecoverMethod()
 
-
 class LoginMethod(web.core.HTTPMethod):
     def get(self, redirect=None):
         if redirect is None:
@@ -43,14 +42,11 @@ class LoginMethod(web.core.HTTPMethod):
 
     def post(self, **kw):
         data = Bunch(kw)
-
         if not web.auth.authenticate(data.username, data.password):
             return "djrq.templates.admin.login", dict(redirect=kw['redirect'])
-
         if data.redirect:
             raise web.core.http.HTTPFound(location=data.redirect)
-
-        raise web.core.http.HTTPFound(location='/')
+        raise web.core.http.HTTPFound(location='suggestions')
 
 login = LoginMethod()
 
