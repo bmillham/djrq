@@ -1,6 +1,7 @@
 from web.core import request
 import djrq.middleware
 import web
+from web.auth import authorize
 from web.core.templating import render
 from datetime import datetime
 from djrq.model import *
@@ -12,8 +13,17 @@ from mistagscontroller import MistagsController
 from requestscontroller import RequestsController
 from options import OptionsController
 
-class Admin(BaseController):
+from account import AccountMixIn
+
+web.auth.in_group = web.auth.ValueIn.partial('groups')
+web.auth.has_permission = web.auth.ValueIn.partial('permissions')
+
+class Admin(BaseController, AccountMixIn):
+    #def __init__(self, id):
+    #    print "Starting admin"
+    #    super(Resource, self).__init__()
     suggestions = SuggestionsController()
     mistags = MistagsController()
+    #@authorize(web.auth.authenticated)
     requests = index = RequestsController()
     options = OptionsController()

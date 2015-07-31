@@ -1,0 +1,21 @@
+<%inherit file="djrq.templates.admin.master"/>
+<%block name="mainpage">
+        <div class="content">
+            <h1>Login</h1>
+
+                     <form method="post" action="${web.request.script_name}">
+                             <input type="hidden" name="redirect" value="${redirect}" />
+
+                             <dl>
+                                     <dt>User Name:</dt>
+                                     <dd><input type="text" name="username" /></dd>
+
+                                     <dt>Password:</dt>
+                                     <dd><input type="password" name="password" /></dd>
+
+                                     <dt></dt>
+                                     <dd><input type="Submit" value="Login" /></dd>
+                             </dl>
+                     </form>
+        </div>
+</%block>
