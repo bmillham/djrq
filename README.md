@@ -5,3 +5,5 @@ Requirements:
 WebCore
 SQLAlchemy
 Nginx
+
+DJRQ should also work with Apache, but it has not yet been tested, so no example configuration is available. This will be worked on soon.
