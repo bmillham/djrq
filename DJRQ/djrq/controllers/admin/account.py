@@ -34,12 +34,10 @@ recover = RecoverMethod()
 
 class LoginMethod(web.core.HTTPMethod):
     def get(self, redirect=None, **kwargs):
-        print "login", redirect, kwargs
         if redirect is None:
             referrer = web.core.request.referrer
-            kwargs['redirect'] = '/' if referrer.endswith(web.core.request.script_name) else referrer
-        print "login", kwargs
-        return "djrq.templates.admin.login", kwargs
+            redirect = '/' if referrer.endswith(web.core.request.script_name) else referrer
+        return "djrq.templates.admin.login", dict(kwargs, redirect=redirect)
 
     def post(self, **kw):
         data = Bunch(kw)
@@ -47,7 +45,7 @@ class LoginMethod(web.core.HTTPMethod):
             return "djrq.templates.admin.login", dict(redirect=kw['redirect'])
         if data.redirect:
             raise web.core.http.HTTPFound(location=data.redirect)
-        raise web.core.http.HTTPFound(location='suggestions')
+        raise web.core.http.HTTPFound(location='/')
 
 login = LoginMethod()
 

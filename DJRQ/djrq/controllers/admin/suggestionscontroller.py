@@ -9,17 +9,18 @@ from account import AccountMixIn
 class SuggestionsController(BaseController, AccountMixIn):
     
     def __after__(self, *args, **kw):
-        print args, kw
-        #kw.update(rkw)
-        kw['suggestions'] = session.query(Suggestions)
-        return super(SuggestionsController, self).__after__(('djrq.templates.admin.suggestions', 
-                                                             kw))
+        # if args[0] is a tuple, then this was a redirect, otherwise it was a normal request
+        try:
+            temp, k = args[0]
+        except:
+            k = args[0]
+            temp = 'djrq.templates.admin.suggestions'
+        k['suggestions'] = session.query(Suggestions)
+        return super(SuggestionsController, self).__after__((temp, k))
+
     @authorize(web.auth.authenticated)
     def index(self, *args, **kw):
-        kw=kw
-        print "index kw"
-        #return kw
-        pass
+        return kw
 
     @authorize(web.auth.authenticated)
     def delete(self, *args, **kw):
