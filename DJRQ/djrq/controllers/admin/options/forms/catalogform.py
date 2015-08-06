@@ -20,7 +20,7 @@ class CatalogForm(web.core.HTTPMethod):
         kw.update(result)
         return super(CatalogForm, self).__after__((temp, kw))
 
-    @authorize(web.auth.authenticated)         
+    @authorize(web.auth.authenticated)
     def get(self, *args, **kw):
         return dict(status=None)
 
