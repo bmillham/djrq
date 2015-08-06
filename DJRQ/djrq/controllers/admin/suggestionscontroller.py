@@ -26,4 +26,4 @@ class SuggestionsController(BaseController, AccountMixIn):
     def delete(self, *args, **kw):
         delsuggestion = session.query(Suggestions).filter(Suggestions.id==args[0]).one()
         session.delete(delsuggestion)
-        #return kw
+        return kw
