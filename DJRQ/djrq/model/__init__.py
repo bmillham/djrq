@@ -5,7 +5,6 @@ from sqlalchemy import *
 from sqlalchemy.sql import func, or_
 from sqlalchemy.types import TIMESTAMP
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy_fulltext import FullText, FullTextSearch
 from time import time
 import markupsafe
 import paste
@@ -26,7 +25,6 @@ from song import Song"""
 
 class Album(Base):
     __tablename__ = 'album'
-    __fulltext_columns__ = ('name',)
     id = Column(Integer, primary_key=True)
     name = Column(String(255))
     prefix = Column(String(32))
@@ -55,7 +53,6 @@ class Album(Base):
 
 class Artist(Base):
     __tablename__ = 'artist'
-    __fulltext_columns__ = ('name',)
     id = Column(Integer, primary_key=True)
     name = Column(String(255))
     prefix = Column(String(32))
@@ -131,7 +128,6 @@ class RequestList(Base):
 
 class Song(Base):
     __tablename__ = 'song'
-    __fulltext_columns__ = ('title,')
 
     id = Column(Integer, primary_key=True)
     file = Column(String(512))
