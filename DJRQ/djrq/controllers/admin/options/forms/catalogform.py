@@ -1,6 +1,8 @@
 import djrq.middleware
 import web
 from djrq.model import *
+from web.auth import authorize
+#from ...account import AccountMixIn
 
 class CatalogForm(web.core.HTTPMethod):
     def __before__(self, *args, **kw):
@@ -10,12 +12,19 @@ class CatalogForm(web.core.HTTPMethod):
         return super(CatalogForm, self).__before__(*args, **kw)
 
     def __after__(self, result, *args, **kw):
+        try:
+            temp, result = result
+        except:
+            temp = 'djrq.templates.admin.catalog'
+            k = result
         kw.update(result)
-        return super(CatalogForm, self).__after__(('djrq.templates.admin.catalog', kw))
-                                                             
+        return super(CatalogForm, self).__after__((temp, kw))
+
+    @authorize(web.auth.authenticated)         
     def get(self, *args, **kw):
         return dict(status=None)
 
+    @authorize(web.auth.authenticated)
     def post(self, *args, **kw):
         result = dict(status=None)
         if 'cat_group' in kw:
