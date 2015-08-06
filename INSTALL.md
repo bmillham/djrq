@@ -34,6 +34,32 @@ Edit development.ini, and change the db.djname.url lines (there are 2 of them) t
 
 At this time, only 1 DJ database is supported, but the example does show more than one. This will work in the near future.
 
+One final step now. DJRQ uses tables in the Ampache database that do not exist in a
+normal Ampache database, so you will need to run a script to create those tables.
+
+A warning here, after runing this script, there is a possiblility that you will not
+be able to update Ampache to a newer version, as is may not recognize the database as
+an Ampache database.
+
+You will still be able to use your existing Ampache to update your database, it just
+won't upgrade anymore. (And that's probaby a good thing, as upgrading Ampache may also
+break IDJC!)
+
+To run the script, you will need to copy it up one directory:
+
+(djrq)brian@cyberman ~/www/djrq/DJRQ $ cp tools/create-extra-djrq-tables.py .
+
+Edit it for your database credentials. Look for this line:
+
+ampache_engine = create_engine('mysql+oursql://sqlalchemy:password@localhost/ampache1', echo=False, encoding='utf8')
+
+And change the user, password, host and database to match your setup. The syntax is:
+mysql+oursql://user:password@host/database
+
+Run the script:
+(djrq)brian@cyberman ~/www/djrq/DJRQ $ python create-extra-djrq-tables.py
+
+
 Now it's time to test things out!
 
 Make sure you still have your virtualenv active.
