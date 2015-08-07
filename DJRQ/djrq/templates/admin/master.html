@@ -5,8 +5,7 @@
 %>
 <%
  current_page=None
- print "Lookup:", lookup(web.request.script_name), web.request.script_name
-%>
+ %>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -67,7 +66,7 @@
      		 </ul>
     		</li>
     		<li><a href="/admin/sitenews"><span class="glyphicon glyphicon-bullhorn"></span></a></li>
-    		<li><a href="logout"><span class="glyphicon glyphicon-off"></span></a></li>
+    		<li><a href="/admin/requests/logout"><span class="glyphicon glyphicon-off"></span></a></li>
 	    	<li class="navbar-right">
 	    	 <a href="/"><span class="glyphicon glyphicon-home"></span></a>
 	    	</li>

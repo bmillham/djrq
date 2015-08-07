@@ -52,7 +52,8 @@ login = LoginMethod()
 
 def logout(self, *args, **kwargs):
     web.auth.deauthenticate()
-    raise web.core.http.HTTPSeeOther(location=web.core.request.referrer)
+    #raise web.core.http.HTTPSeeOther(location=web.core.request.referrer)
+    raise web.core.http.HTTPSeeOther(location='/admin/requests')
 
 
 class AccountMixIn(object):
