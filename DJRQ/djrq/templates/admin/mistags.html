@@ -1,0 +1,38 @@
+<%!
+from djrq.templates.helpers import nt_from_now
+%>
+<%inherit file="djrq.templates.admin.master"/>
+<%block name="mainpage">
+<div class="row">
+ <div class="col-md-15">
+  <table class="table table-bordered table-striped table-condensed">
+   <caption><h4 align="center">Mistags (${mistags.count()})</h4></caption>
+   <tr>
+    <th rowspan="2">Action</th><th colspan="2">Artist</th>
+    <th colspan="2" align="center">Album</th><th colspan="2" align="center">Title</th>
+    <th rowspan="2">Reported By</th><th rowspan="2">Reported</th><th rowspan="2">Comments</th>
+    <th rowspan="2">Filename</th>
+   </tr>
+   <tr><th>Original</th><th>Corrected</th>
+   	   <th>Original</th><th>Corrected</th><th>Original</th><th>Corrected</th>
+   </tr>
+% for mistag in mistags:
+   <tr>
+   	<td>
+   		<a href="/admin/mistags/delete/${mistag.id}" class="btn btn-xs btn-primary">
+		 <span>Ignore Mistag</span>
+		</a>
+   	</td>
+   	<%include file="djrq.templates.admin.mistag_diff", args="original=mistag.song.artist.fullname, reported=mistag.artist"/>
+	<%include file="djrq.templates.admin.mistag_diff", args="original=mistag.song.album.fullname, reported=mistag.album"/>
+	<%include file="djrq.templates.admin.mistag_diff", args="original=mistag.song.title, reported=mistag.title"/>
+   	<td>${mistag.reported_by}</td>
+   	<td>${mistag.reported | nt_from_now}</td>
+   	<td>${mistag.comments}</td>
+   	<td>${mistag.song.file}</td>
+   </tr>
+% endfor
+  </table>
+ </div>
+</div>
+</%block>

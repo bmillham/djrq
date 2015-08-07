@@ -1,6 +1,29 @@
+
 <%inherit file="djrq.templates.admin.master"/>
 <%block name="mainpage">
-
-<h1>Hello Admin</h1>
-<h2>Suggestions</h2>
+<div class="row">
+ <div class="col-md-15">
+  <table class="table table-bordered table-striped table-condensed">
+   <caption><h4 align="center">Suggestions (${suggestions.count()})</h4></caption>
+   <tr>
+    <th>Action</th><th>Artist</th><th>Album</th><th>Title</th>
+    <th>Suggested By</th><th>Comments</th>
+   </tr>
+% for suggestion in suggestions:
+   <tr>
+   	<td>
+   		<a href="/admin/suggestions/delete/${suggestion.id}" class="btn btn-xs btn-primary">
+		 <span>Delete</span>
+		</a>
+   	</td>
+   	<td>${suggestion.artist}</td>
+   	<td>${suggestion.album}</td>
+   	<td>${suggestion.title}</td>
+   	<td>${suggestion.suggestor}</td>
+   	<td>${suggestion.comments}</td>
+   </tr>
+% endfor
+  </table>
+ </div>
+</div>
 </%block>

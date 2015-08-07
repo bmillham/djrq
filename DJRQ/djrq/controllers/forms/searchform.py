@@ -13,4 +13,7 @@ class SearchForm(web.core.HTTPMethod):
                                                     search_for=None,
                                                     requests_count=requests_count,
                                                     listeners=kwargs['listeners'],
+                                                    limit_requests=kwargs['limit_requests'],
+                                                    show_title=kwargs['show_title'],
+                                                    start_time=kwargs['start_time'],
                                                     search_text=kwargs['search_text']))

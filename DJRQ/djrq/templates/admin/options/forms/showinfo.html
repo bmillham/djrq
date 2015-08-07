@@ -1,0 +1,28 @@
+<%!
+from djrq.templates.helpers import nt_from_now
+%>
+<%inherit file="djrq.templates.admin.master"/>
+<%block name="mainpage">
+<div class="col-sm-offset-4 col-sm-8">
+ <h4>Show Information ${status if status is not None else ''}</h4>
+</div>
+<form class="form-horizontal" action="showinfo" id="showinfoform" method="post">
+<div class="form-group">
+ <label for="showtitlefield" class="col-sm-2 control-label">Show Title</label>
+ <div class="col-sm-6">
+  <input type="text" class="form-control" id="showtitlefield" name="showtitlefield" placeholder="Show Title" value="${show_title}"/>
+ </div>
+</div>
+<div class="form-group">
+ <label for="showstartfield" class="col-sm-2 control-label">Show Start Time</label>
+ <div class="col-sm-6">
+  <input type="text" class="form-control" id="showstartfield" name="showstartfield" placeholder="Show Start Time" value="${show_time}"/>
+ </div>
+</div>
+<div class="form-group">
+ <div class="col-sm-offset-4 col-sm-8">
+  <button type="submit" class="btn btn-primary">Save Show Information</button>
+ </div>
+</div>
+</form>
+</%block>

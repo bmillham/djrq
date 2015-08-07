@@ -1,0 +1,52 @@
+## encoding: utf-8
+<%!
+from djrq.templates.helpers import colon, nt_from_now
+import web
+%>
+<%inherit file="djrq.templates.admin.master"/>
+<%block name="mainpage">
+<div class="row">
+ <div class="col-md-15">
+  <table class="table table-bordered table-striped table-condensed">
+<%
+  cv = web.core.session['request_view'][0]
+  if cv != 'np':
+  	requests_count = all_requests[cv]['request_count']
+  	requests_length = all_requests[cv]['request_length']
+  else:
+    requests_count = all_requests['new']['request_count'] + all_requests['pending']['request_count']
+    requests_length = all_requests['new']['request_length'] + all_requests['pending']['request_length']
+%>
+% if requests_count == 0:
+   <caption><h3 align="center">No Requests <%include file="djrq.templates.admin.change_request_view_button"/></h3></caption>
+% else:
+   <caption><h3 align="center"> ${requests_count} Requests (${requests_length | colon}) <%include file="djrq.templates.admin.change_request_view_button"/></h3></caption>
+   <tr>
+    <th>Status</th><th>Artist</th><th>Title</th><th>Album</th><th>Length</th>
+    <th>Requested by</th><th>Last Played By</th>
+   </tr>
+% for row in requests:
+   <tr>
+   	<td>
+   	<%include file="djrq.templates.admin.request_status_button" args="row=row"/>
+   	</td>
+    <td>${row.song.artist}</td>
+    <td>${row.song.title}</td>
+    <td>${row.song.album}</td>
+    <td>${row.song.time | colon}</td>
+    <td>${row.name} ${row.t_stamp | nt_from_now}</td>
+    <td>
+%    try:
+     	${row.song.played[0].played_by} ${row.song.played[0].date_played | nt_from_now}
+%	 except:
+	    &nbsp;
+%	 endtry
+    </td>
+   </tr>
+% endfor
+% endif
+  </table>
+ </div>
+</div>
+</%block>
+

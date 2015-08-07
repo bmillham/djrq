@@ -9,4 +9,7 @@ class AlbumController(BaseController):
         return "djrq.templates.album", dict(album=a,
                                             listeners=kwargs['listeners'],
                                                    current_page="album",
+                                                   limit_requests=kwargs['limit_requests'],
+                                                   show_title=kwargs['show_title'],
+                                                   start_time=kwargs['start_time'],
                                                    requests_count=get_new_pending_requests_info()[0])

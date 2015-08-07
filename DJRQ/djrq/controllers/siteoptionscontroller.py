@@ -20,6 +20,8 @@ class SiteOptionsController(web.core.HTTPMethod):
  
         result = ('djrq.templates.siteoptions', dict(result,  # Extend what the individual controller returns.
                 requests_count=kw['requests_count'],
+                show_title=kw['show_title'],
+                start_time=kw['start_time'],
                 themes=themes,
                 current_theme=current_theme,
                 nolettercounts=nolettercounts,

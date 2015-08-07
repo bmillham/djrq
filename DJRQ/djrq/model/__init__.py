@@ -9,6 +9,8 @@ from time import time
 import markupsafe
 import paste
 from web.core import request
+from sqlalchemy.ext.associationproxy import association_proxy
+#from auth import *
 
 Base = declarative_base()
 metadata = Base.metadata
@@ -19,14 +21,18 @@ from album import Album
 from played import Played
 from requestlist import RequestList
 from song import Song"""
+#__all__ = ['Base']
 
 class Album(Base):
     __tablename__ = 'album'
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    prefix = Column(String)
+    name = Column(String(255))
+    prefix = Column(String(32))
     year = Column(Integer)
     disk = Column(SmallInteger)
+    Index(name)
+    Index(prefix)
+    __table_args__ = {'mysql_engine':'MyISAM'}
 
     def __unicode__(self):
         return u'<a href="/album/id/{}">{}</a>'.format(self.id, self.fullname)
@@ -48,9 +54,12 @@ class Album(Base):
 class Artist(Base):
     __tablename__ = 'artist'
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    prefix = Column(String)
-
+    name = Column(String(255))
+    prefix = Column(String(32))
+    Index(name)
+    Index(prefix)
+    
+    __table_args__ = {'mysql_engine':'MyISAM'}
     #def __repr__(self):
     #    return "{} |||| {} |||| {}".format(self.id, self.fullname, 'artist')
 
@@ -71,23 +80,34 @@ class Artist(Base):
     def fullname(self):
         return func.concat_ws(" ", self.prefix, self.name)
 
+class Catalog(Base):
+    __tablename__ = 'catalog'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(128))
+    catalog_type = Column(String(128))
+    last_update = Column(Integer)
+    last_clean = Column(Integer)
+    last_add = Column(Integer)
+
 class Mistags(Base):
     __tablename__ = 'mistags'
+    __table_args__ = {'mysql_engine':'MyISAM'}
     id = Column(Integer, primary_key=True)
     track_id = Column(Integer, ForeignKey('song.id'))
-    reported_by = Column(String)
+    reported_by = Column(String(255))
     reported = Column(TIMESTAMP)
-    artist = Column(String)
-    album = Column(String)
-    title = Column(String)
-    comments = Column(String)
+    artist = Column(String(255))
+    album = Column(String(255))
+    title = Column(String(255))
+    comments = Column(String(255))
 
 class Played(Base):
     __tablename__ = 'played'
+    __table_args__ = {'mysql_engine':'MyISAM'}
     played_id = Column(Integer, primary_key=True)
     track_id = Column(Integer, ForeignKey('song.id'))
     date_played = Column(DateTime)
-    played_by = Column(String)
+    played_by = Column(String(255))
     played_by_me = Column(Integer)
 
     def get_multi_albums(self):
@@ -95,30 +115,33 @@ class Played(Base):
 
 class RequestList(Base):
     __tablename__= 'requestlist'
+    __table_args__ = {'mysql_engine':'MyISAM'}
     id = Column(Integer, primary_key=True)
     song_id = Column('songID', Integer, ForeignKey('song.id'))
     t_stamp = Column(DateTime)
-    host = Column(String)
-    msg = Column(String)
-    name = Column(String)
+    host = Column(String(255))
+    msg = Column(String(255))
+    name = Column(String(255))
     code = Column(Integer)
     eta = Column('ETA', DateTime)
     status = Column(Enum('played', 'ignored', 'pending', 'new'))
 
 class Song(Base):
     __tablename__ = 'song'
+
     id = Column(Integer, primary_key=True)
-    file = Column(String)
+    file = Column(String(512))
     catalog = Column(Integer)
     album_id  = Column("album", Integer, ForeignKey('album.id'))
     year = Column(Integer)
     artist_id = Column("artist", Integer, ForeignKey('artist.id'))
-    title = Column(String)
+    title = Column(String(255))
     size = Column(Integer)
     time = Column(SmallInteger)
     track = Column(SmallInteger)
     #was_played = Column('played', SmallInteger)
     addition_time = Column(Integer)
+    __table_args__ = {'mysql_engine':'MyISAM'}
     album = relationship("Album", backref=backref('songs', order_by=track))
     artist = relationship("Artist", backref=backref('songs', order_by=title))
     played = relationship("Played", backref=backref('song'), order_by=Played.date_played.desc())
@@ -130,41 +153,75 @@ class Song(Base):
                                 primaryjoin="and_(RequestList.song_id==Song.id, or_(RequestList.status == 'new', RequestList.status=='pending'))")
     mistags = relationship("Mistags", backref=backref('song'))
 
-
-
 class Suggestions(Base):
     __tablename__ = 'suggestions'
+    __table_args__ = {'mysql_engine':'MyISAM'}
     id = Column(Integer, primary_key=True)
-    title = Column(String)
-    album = Column(String)
-    artist = Column(String)
-    suggestor = Column(String)
-    comments = Column(String)
+    title = Column(String(255))
+    album = Column(String(255))
+    artist = Column(String(255))
+    suggestor = Column(String(255))
+    comments = Column(String(255))
 
 class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
-    username = Column(String)
-    fullname = Column(String)
-    email = Column(String)
-    website = Column(String)
-    apikey = Column(String)
-    password = Column(String(64))
+    username = Column(String(255))
+    fullname = Column(String(255))
+    email = Column(String(255))
+    website = Column(String(255))
+    apikey = Column(String(255))
+    _password = Column('password', String(128), nullable=False)
     access = Column(Integer())
     disabled = Column(Integer())
     last_seen = Column(Integer())
     create_date = Column(Integer())
-    validation = Column(String)
+    validation = Column(String(255))
+
+    def _set_password(self, value):
+        if value is None:
+            self._password = None
+            return
+
+        import hashlib
+        encoder = hashlib.new('sha512')
+        encoder.update(value)
+        self._password = encoder.hexdigest()
+
+    password = synonym('_password', descriptor=property(lambda self: self._password, _set_password))
+
+    @classmethod
+    def authenticate(cls, identifier, password=None, force=False):
+        if not force and not password:
+            return None
+
+        try:
+            user = cls.get(identifier)
+
+        except:
+            return None
+
+        if force:
+            return user.id, user
+
+        import hashlib
+        encoder = hashlib.new('sha512')
+        encoder.update(password)
+
+        if user.password is None or user.password != encoder.hexdigest():
+            return None
+
+        return user.id, user
 
 class SiteOptions(Base):
     __tablename__ = "site_options"
     id = Column(Integer, primary_key=True)
-    show_title = Column(String)
-    show_time = Column(String)
-    show_end = Column(String)
-    limit_requests = Column(String)
+    show_title = Column(String(255))
+    show_time = Column(String(255))
+    show_end = Column(String(255))
+    limit_requests = Column(String(255))
     offset = Column(Integer)
-    catalog = Column(String)
+    catalog = Column(String(255))
 
 class Listeners(Base):
     __tablename__ = "listeners"
@@ -172,6 +229,101 @@ class Listeners(Base):
     current = Column(Integer)
     max = Column(Integer)
 
+class Account(Base):
+    __tablename__ = 'accounts'
+    __repr__ = lambda self: "Account(%s, '%s')" % (self.id, self.name)
+
+    id = Column(String(32), primary_key=True)
+    name = Column(Unicode(255), nullable=False)
+    _password = Column('password', String(128))
+
+    def _set_password(self, value):
+        if value is None:
+            self._password = None
+            return
+
+        import hashlib
+        encoder = hashlib.new('sha512')
+        encoder.update(value)
+        self._password = encoder.hexdigest()
+
+    password = synonym('_password', descriptor=property(lambda self: self._password, _set_password))
+
+    groups = association_proxy('_groups', 'id')
+
+    @property
+    def permissions(self):
+        perms = []
+
+        for group in self._groups:
+            for perm in group.permissions:
+                perms.append(perm)
+
+        return set(perms)
+
+    @classmethod
+    def lookup(cls, identifier):
+        user = session.query(cls).filter(cls.id==identifier).one()
+        return user
+
+    @classmethod
+    def authenticate(cls, identifier, password=None, force=False):
+        if not force and not password:
+            return None
+
+        try:
+            #user = cls.get(identifier)
+            user = session.query(cls).filter(cls.name==identifier).one()
+
+        except:
+            return None
+
+        if force:
+            return user.id, user
+
+        import hashlib
+        encoder = hashlib.new('sha512')
+        encoder.update(password)
+        if user.password is None or user.password != encoder.hexdigest():
+            return None
+        return user.id, user
+
+
+account_groups = Table('account_groups', Base.metadata,
+                    Column('account_id', String(32), ForeignKey('accounts.id')),
+                    Column('group_id', Unicode(32), ForeignKey('groups.id'))
+            )
+
+
+class Group(Base):
+    __tablename__ = 'groups'
+    __repr__ = lambda self: "Group(%s, %r)" % (self.id, self.name)
+    __str__ = lambda self: str(self.id)
+    __unicode__ = lambda self: self.id
+
+    id = Column(String(32), primary_key=True)
+    description = Column(Unicode(255))
+
+    members = relation(Account, secondary=account_groups, backref='_groups')
+    permissions = association_proxy('_permissions', 'id')
+
+
+group_permissions = Table('group_perms', Base.metadata,
+                    Column('group_id', Unicode(32), ForeignKey('groups.id')),
+                    Column('permission_id', Unicode(32), ForeignKey('permissions.id'))
+            )
+
+
+class Permission(Base):
+    __tablename__ = 'permissions'
+    __repr__ = lambda self: "Permission(%s)" % (self.id, )
+    __str__ = lambda self: str(self.id)
+    __unicode__ = lambda self: self.id
+
+    id = Column(String(32), primary_key=True)
+    description = Column(Unicode(255))
+
+    groups = relation(Group, secondary=group_permissions, backref='_permissions')
 #def ready(sessionmaker):
 #    global session
 #    session = sessionmaker
@@ -181,6 +333,12 @@ def get_new_pending_requests_info():
     return session.query(func.count(RequestList.id).label('request_count'),
                   func.sum(Song.time).label('request_length')).\
                   join(Song).filter(or_(RequestList.status=="new", RequestList.status=='pending')).one()
+
+def get_all_requests_info():
+    return session.query(func.count(RequestList.status).label('request_count'),
+                         RequestList.status,
+                         func.sum(Song.time).label('request_length')).\
+                         join(Song).group_by(RequestList.status)
 
 def get_last_played(catalogs, limit=50):
     return session.query(func.count(Played.date_played), func.avg(Song.time), Played).join(Song).filter(Song.catalog.in_(catalogs)).group_by(Played.date_played).order_by(Played.date_played.desc()).limit(limit)

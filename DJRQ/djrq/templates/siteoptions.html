@@ -7,28 +7,30 @@ import web
 %>
 <%inherit file="djrq.templates.master"/>
 <%block name="mainpage">
-% if settings_saved:
- <h2>Settings Saved</h2>
-% endif
-<form  class="form-inline" id="siteoptionsform" action="/siteoptions" method="post">
- <div>
-  <h5>Site Options</h5>
- </div>
+<div class="col-sm-offset-4 col-sm-8">
+ <h4>Site Options${' [Updated]' if settings_saved else ''}</h4>
+</div>
+<form  class="form-horizontal" id="siteoptionsform" action="/siteoptions" method="post">
  <div class="form-group">
-   <label for="theme">Select a Theme</label>
-   <select class="form-control" name="theme">
+   <label for="theme" class="col-sm-2 control-label">Select a Theme</label>
+   <div class="col-sm-6">
+    <select class="form-control" name="theme">
 %  for theme in themes:
-   	<option ${'selected' if theme == current_theme else ''} value="${theme}">${theme.capitalize()}</option>
+   	 <option ${'selected' if theme == current_theme else ''} value="${theme}">${theme.capitalize()}</option>
 %  endfor
-   </select>
+    </select>
+   </div>
  </div>
  <div class="form-group">
-   <label for"lettercheck">Do Not Show Counts In Letter List:</label>
+  <label for"lettercheck" class="col-sm-4 control-label">Do Not Show Counts In Letter List:</label>
+  <div class="col-sm-1">
    <input type="checkbox" ${'checked' if nolettercounts else ''} class="form-control" name="lettercheck" value="nolettercounts"/>
+  </div>
  </div>
- <br/>
- <div >
-   <button type="submit" class="btn btn-primary">Submit</button>
+ <div class="form-group">
+  <div class="col-sm-offset-4 col-sm-8">
+   <button type="submit" class="btn btn-primary">Update Site Options</button>
+  </div>
  </div>
 </form>
 </%block>

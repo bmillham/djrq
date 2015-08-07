@@ -65,6 +65,9 @@ import djrq
         overflow: auto;
       }
       body {padding: 70px;}
+% if show_title != '':
+      body { padding-bottom: 80px; }
+% endif
     </style>
   </head>
   <body role="document">
@@ -73,12 +76,15 @@ import djrq
      <%block name="letterscontainer"/>     
      <%block name="mainpage"/>
     </div>
-    <p>
-    <h5 align="center">&copy; 2010-${datetime.now().year} Brian Millham</h4>
-    <h5 align="center">Glyphicons courtesy of <a href="http://glyphicons.com/">glyphicons.com</a></h5>
-    <h6 align="center">Powered by Python, WebCore, Mako Templates, MySQL (with SQLAlchemy), Twitter Bootstrap and Nginx</h6>
-    <h6 align="center">Important disclaimer: This site is for informational purposes only. No music files are hosted
-    	on this site.</h6>
+    <%include file="djrq.templates.footer"/>
     </p>
+% if show_title != '':
+    <nav class="navbar navbar-inverse navbar-fixed-bottom">
+  	 <div class="container-fluid">
+      <p class="navbar-brand">Show Title: ${show_title}</p>
+      <p class="navbar-brand navbar-right">Start Time: ${start_time}</p>
+     </div>
+    </nav>
+% endif
   </body>
 </html>
