@@ -12,6 +12,7 @@ from suggestionscontroller import SuggestionsController
 from mistagscontroller import MistagsController
 from requestscontroller import RequestsController
 from options import OptionsController
+from sitenewscontroller import SiteNewsController
 
 from account import AccountMixIn
 
@@ -24,6 +25,7 @@ class Admin(BaseController, AccountMixIn):
     #    super(Resource, self).__init__()
     suggestions = SuggestionsController()
     mistags = MistagsController()
-    #@authorize(web.auth.authenticated)
     requests = index = RequestsController()
     options = OptionsController()
+    sitenews = SiteNewsController()
+
