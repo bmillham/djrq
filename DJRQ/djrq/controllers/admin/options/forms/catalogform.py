@@ -12,13 +12,8 @@ class CatalogForm(web.core.HTTPMethod):
         return super(CatalogForm, self).__before__(*args, **kw)
 
     def __after__(self, result, *args, **kw):
-        try:
-            temp, result = result
-        except:
-            temp = 'djrq.templates.admin.catalog'
-            k = result
         kw.update(result)
-        return super(CatalogForm, self).__after__((temp, kw))
+        return super(CatalogForm, self).__after__(('djrq.templates.admin.catalog', kw))
 
     @authorize(web.auth.authenticated)
     def get(self, *args, **kw):

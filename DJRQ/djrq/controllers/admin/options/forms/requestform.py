@@ -11,12 +11,8 @@ class RequestForm(web.core.HTTPMethod):
         return super(RequestForm, self).__before__(*args, **kw)
 
     def __after__(self, result, *args, **kw):
-        if type(result) == tuple:
-            temp, result = result
-        else:
-            temp = 'djrq.templates.admin.options.forms.request'
-            kw.update(result)
-        return super(RequestForm, self).__after__((temp, kw))
+        kw.update(result)
+        return super(RequestForm, self).__after__(('djrq.templates.admin.options.forms.request', kw))
 
     @authorize(web.auth.authenticated)
     def get(self, *args, **kw):
