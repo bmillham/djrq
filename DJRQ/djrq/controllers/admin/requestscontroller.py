@@ -43,9 +43,6 @@ class RequestsController(BaseController, AccountMixIn):
                                                                   requests=requests,
                                                                   )))
 
-    def __lookup__(self, *args, **kw):
-        print "In requestcontroller lookup", args, kw
-
     @authorize(web.auth.authenticated)
     def index(self, *args, **kw):
         return kw

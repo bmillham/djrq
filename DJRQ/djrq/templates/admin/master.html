@@ -53,19 +53,19 @@
      		 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-edit"></span> <span class="caret"></span></a>
      		 <ul class="dropdown-menu" role="menu">
      		 	<%include file='djrq.templates.menuitem' args='title="Show Information", link="/options/showinfo"' />
-      		  <%include file='djrq.templates.menuitem' args='title="Last Played", link="/options/lastplayed"' />
+      		  <%doc><%include file='djrq.templates.menuitem' args='title="Last Played", link="/options/lastplayed"' /></%doc>
       		  <%include file='djrq.templates.menuitem', args='title="Requests", link="/options/requests"' />
       		  <%include file='djrq.templates.menuitem', args='title="Catalog Selection", link="/options/catalog"' />
      		 </ul>
     		</li>
-    		<li class="dropdown">
+    		<%doc><li class="dropdown">
      		 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-file"></span> <span class="caret"></span></a>
      		 <ul class="dropdown-menu" role="menu">
       		  <%include file='djrq.templates.menuitem' args='title="Upload/Download Private Files", link="/upload/private"' />
       		  <%include file='djrq.templates.menuitem', args='title="Upload/Download Shared Files", link="/upload/shared"' />
      		 </ul>
     		</li>
-    		<li><a href="/admin/sitenews"><span class="glyphicon glyphicon-bullhorn"></span></a></li>
+    		<li><a href="/admin/sitenews"><span class="glyphicon glyphicon-bullhorn"></span></a></li></%doc>
     		<li><a href="/admin/requests/logout"><span class="glyphicon glyphicon-off"></span></a></li>
 	    	<li class="navbar-right">
 	    	 <a href="/"><span class="glyphicon glyphicon-home"></span></a>
