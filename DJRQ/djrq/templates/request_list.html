@@ -14,7 +14,7 @@ listeners = kw['listeners']
 <%inherit file="djrq.templates.master"/>
 <%block name="mainpage">
 <div class="row">
-        <div class="col-md-15">
+        <div class="col-xs-12">
 <table class="table table-bordered table-striped table-condensed">
 % if requests_count == 0:
 <caption><h3 align="center">No Requests</h3></caption>
@@ -26,7 +26,6 @@ listeners = kw['listeners']
 </tr>
 % for row in request_list:
 <tr>
-  <%doc><td>${row.song.artist.fullname}</td></%doc>
   <td>${row.song.artist}</td>
   <td>${row.song.title}</td>
   <td>${row.song.album}</td>
