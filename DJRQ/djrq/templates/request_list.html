@@ -14,8 +14,8 @@ listeners = kw['listeners']
 <%inherit file="djrq.templates.master"/>
 <%block name="mainpage">
 <div class="row">
-        <div class="col-xs-12">
-<table class="table table-bordered table-striped table-condensed">
+        <div class="">
+<table class="table table-bordered table-striped table-condensed col-xs-12">
 % if requests_count == 0:
 <caption><h3 align="center">No Requests</h3></caption>
 % else:

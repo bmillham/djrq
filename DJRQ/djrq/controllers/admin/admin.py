@@ -12,6 +12,7 @@ from suggestionscontroller import SuggestionsController
 from mistagscontroller import MistagsController
 from requestscontroller import RequestsController
 from options import OptionsController
+from upload import UploadController
 from sitenewscontroller import SiteNewsController
 
 from account import AccountMixIn
@@ -27,5 +28,6 @@ class Admin(BaseController, AccountMixIn):
     mistags = MistagsController()
     requests = index = RequestsController()
     options = OptionsController()
+    upload = UploadController()
     sitenews = SiteNewsController()
 
