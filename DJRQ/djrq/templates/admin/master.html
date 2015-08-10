@@ -2,6 +2,7 @@
 <%!
  from datetime import datetime
  from web import core
+ from web import auth
 %>
 <%
  current_page=None
@@ -31,6 +32,7 @@
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="/js/bootstrap.min.js"></script>
     <link href="/css/theme.css" rel="stylesheet">
+    <%block name="additionalheaders"/>
   </head>
   <body role="document" <%block name="bodydata"/>>
     <!-- Fixed navbar -->
@@ -47,6 +49,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
+% if auth.authenticated:
 		    <li><a href="/admin/suggestions">Suggestions</a></li>
 	    	<li><a href="/admin/mistags">Mistags</a></li>
 	    	<li class="dropdown">
@@ -65,8 +68,11 @@
       		  <%include file='djrq.templates.menuitem', args='title="Upload/Download Shared Files", link="/upload/shared"' />
      		 </ul>
     		</li>
+% endif
     		<li><a href="/admin/sitenews"><span class="glyphicon glyphicon-bullhorn"></span></a></li>
+% if auth.authenticated:
     		<li><a href="/admin/requests/logout"><span class="glyphicon glyphicon-off"></span></a></li>
+% endif
 	    	<li class="navbar-right">
 	    	 <a href="/"><span class="glyphicon glyphicon-home"></span></a>
 	    	</li>
@@ -78,5 +84,6 @@
      <%block name="mainpage"/>
     </div>
     <%include file="djrq.templates.footer"/>
+    <%block name="additionalscripts"/>
   </body>
 </html>

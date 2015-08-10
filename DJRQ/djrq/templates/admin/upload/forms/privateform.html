@@ -1,9 +1,13 @@
-<%!
-from djrq.templates.helpers import nt_from_now
-%>
 <%inherit file="djrq.templates.admin.master"/>
+<%block name="additionalheaders">
+ <%include file="djrq.templates.admin.upload.forms.additional-headers"/>
+</%block>
 <%block name="mainpage">
 <div class="col-sm-offset-4 col-sm-8">
  <h4>Upload Files to Private Area</h4>
 </div>
+<%include file="djrq.templates.admin.upload.forms.uploadform"/>
+<%block name="additionalscripts">
+ <%include file="djrq.templates.admin.upload.forms.uploadscripts"/>
+</%block>
 </%block>
