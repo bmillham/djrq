@@ -18,12 +18,15 @@ class Song(Base):
     track = Column('track_number', Integer)
     addition_time = Column('utime', DateTime)
     played = relationship("Played", backref="song")
-    requests = relationship("RequestList", backref='song', order_by='RequestList.t_stamp.desc()')
+    #requests = relationship("RequestList", backref='song', order_by='RequestList.t_stamp.desc()')
     new_requests = relationship("RequestList", 
         primaryjoin="and_(RequestList.song_id==Song.id, or_(RequestList.status == 'new', RequestList.status=='pending'))")
     played_requests = relationship("RequestList",
                        primaryjoin="and_(RequestList.song_id==Song.id, RequestList.status == 'played')",
                        order_by="RequestList.t_stamp.desc()")
+    last_request = relationship("RequestList",\
+                                primaryjoin="RequestList.song_id==Song.id",\
+                                uselist=False, order_by='RequestList.t_stamp.desc()')
     mistags = relationship("Mistags", backref='song')
 
     artist_prefix = column_property(func.get_prefix(artist_fullname, prefixes))

@@ -12,3 +12,4 @@ class RequestList(Base):
     code = Column(Integer)
     eta = Column('ETA', DateTime)
     status = Column(Enum('played', 'ignored', 'pending', 'new', name='request_enum'))
+    song = relationship("Song", backref='songs')

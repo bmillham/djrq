@@ -6,7 +6,7 @@ from basecontroller import BaseController
 
 class WhatsNewController(BaseController):
     def index(self, *args, **kwargs):
-        start_time = time() - (60 * 60 * 24 * 30) # 7 days
+        start_time = time() - (60 * 60 * 24 * 90) # 7 days
         wn = get_new_artists(kwargs['selected_catalogs'], start_time)
         wn_stats = get_new_counts(kwargs['selected_catalogs'], start_time)
         return 'djrq.templates.whatsnew', dict(

@@ -13,16 +13,15 @@ from datetime import datetime
 <%
  try:
   total_songs = songs.count()
-  viewing_new = True
  except:
   total_songs = len(songs)
-  viewing_new = False
  endtry
-
 %>
-  <caption><h4 align="center">Artist: ${artist.fullname}&lrm; (${total_songs} tracks)
+  <caption><h4 align="center">
 % if viewing_new:
-  [View all tracks by ${artist}]
+${total_songs} new songs by ${artist.fullname}&lrm; [View all songs by ${artist}]
+% else:
+Artist: ${artist.fullname}&lrm; (${total_songs} songs)
 % endif 
  </h4></caption>
  <tr>

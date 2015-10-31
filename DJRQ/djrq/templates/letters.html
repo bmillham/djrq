@@ -42,7 +42,7 @@ from web.core import session
  <li align=center ${'style="width: 90px"' if not nolettercounts else ''} tip="${letter}" role="presentation" ${'class="active"' if letter == browseletter else ''}>
    
    <a href="${web.request.environ['web.controller']}/${browse_by}/${letter | u, fix_dot}" tip="${count}">
-     ${letter}
+     ${'&nbsp;' if letter == ' ' else letter}
 %  if not nolettercounts:
      <span class="badge"> ${padding}${count}${padding}</span>
 %  endif
@@ -60,17 +60,26 @@ from web.core import session
  <div class="col-md-12">
 % if a_list is not None:
 <%
-    #a_len = len(a_list)
-    a_len = a_list.count()
+    try:
+    	a_len = a_list.count()
+    except:
+    	a_len = len(a_list)
     i = 0
 %>
  <table class="table table-bordered table-striped table-condensed">
   <caption><h4 align="center">${browseletter}&lrm; (${a_len} matches)</h4><caption>
 %  for a in a_list:
+<%
+    try:
+     s_count = len(a.songs)
+    except:
+     s_count = a.songs.count()
+    endtry
+%>
 %   if i % 3 == 0:
      <tr>
 %   endif
-  <td>${a} <span class="badge pull-right">${len(a.songs)}</span></td>
+  <td>${a} <span class="badge pull-right">${s_count}</span></td>
 %   if i % 3 == 2:
      </tr>
 %   endif

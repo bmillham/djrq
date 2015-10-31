@@ -3,14 +3,30 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Integer, Column, String, ForeignKey, func
 from sqlalchemy import Boolean, Text, DateTime, Enum, or_, Interval
 from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import *
+from sqlalchemy import *
+from sqlalchemy.sql import func, or_
+from sqlalchemy.types import TIMESTAMP
+from sqlalchemy.ext.hybrid import hybrid_property
+from time import time
+import markupsafe
+import paste
+from web.core import request
+from sqlalchemy.ext.associationproxy import association_proxy
+from ...model import *
 
-Base = declarative_base()
-session = StackedObjectProxy()
+#Base = declarative_base()
+#metadata = Base.metadata
+#session = StackedObjectProxy()
 prefixes = ['the']
 
 from .song import Song
 from .history import Played
 from .requestlist import RequestList
+
+def get_current_requests():
+    return session.query(RequestList).\
+                       filter((RequestList.status == 'new') | (RequestList.status == 'pending')).order_by(RequestList.id)
 
 def get_new_pending_requests_info():
     return session.query(func.count(RequestList.id).label('request_count'),
@@ -41,6 +57,24 @@ def get_top_played_by_all(catalogs):
                     filter(Song.catalog.in_(catalogs)).\
                     group_by(Played.track_id).\
                     order_by(func.count(Played.track_id).desc()).limit(10)
+
+def get_top_played_by_me(catalogs):
+    return get_top_played_by_all(catalogs)
+
+def get_top_requested(catalogs):
+    for sid, rid, cnt in session.query(RequestList.song_id,\
+                                       func.max(RequestList.id),\
+                                       func.count(RequestList.song_id)).\
+                                 join(Song).\
+                                 filter(Song.catalog.in_(catalogs)).\
+                                 group_by(RequestList.song_id).limit(10):
+        r = session.query(RequestList).join(Song).filter(RequestList.id==rid, Song.catalog.in_(catalogs)).one()
+        yield r, cnt
+
+def get_top_requestors(catalogs):
+    return session.query(func.count(RequestList.name).label('request_count'),
+                         RequestList.name.label('requestor'),
+                         func.max(RequestList.t_stamp).label('last_request')).join(Song).filter(Song.catalog.in_(catalogs)).group_by(RequestList.name).order_by(func.count(RequestList.name).desc()).limit(10)
 
 def get_artist_by_letter(catalogs, letter):
     return session.query(Song.artist_name,\

@@ -13,6 +13,7 @@ class BrowseController(BaseController):
             except UnicodeError, e: # If it's a unicode error, we are running under paster so just use what we got
                 letter = args[0]
             if letter == '.dot': letter = '.'
+            if letter == '.space': letter = ' '
             args = (letter, ) + args[1:]  # Inject it back.
 
         return super(BrowseController, self).__before__(*args, **kw)

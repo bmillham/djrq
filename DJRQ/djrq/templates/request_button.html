@@ -9,7 +9,7 @@
     	lp = time.mktime(row.played[0].date_played.timetuple())
     except:
     	lp = 0
-    max_time = int(time.time()) - (limit_requests * 60 * 60)
+    max_time = int(time.time()) - (int(limit_requests) * 60 * 60)
     if lp > max_time:
     	justplayed = True
     if len(row.new_requests) > 0:

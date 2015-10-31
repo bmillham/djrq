@@ -16,6 +16,8 @@ def aa_link(row):
 def fix_dot(value):
     if value == '.':
         value = '.dot'
+    elif value == ' ' or value == '+':
+        value = '.space'
     return value
 
 def nt_from_now(value):

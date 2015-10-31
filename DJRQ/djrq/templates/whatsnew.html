@@ -26,7 +26,7 @@ from datetime import datetime
  </tr>
 % for count, total_time, total_size, song in whatsnew:
  <tr>
- <td><a href="/artist/new/${song.artist_id}">${song.artist.fullname}</a></td>
+ <td>${song.artist.new_link}</td>
  <td>${count}</td>
  <td>${total_size | naturalsize}</td>
  <td>${total_time | colon}</td>
