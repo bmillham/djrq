@@ -131,8 +131,8 @@ class Song(Base):
     __tablename__ = "cc_files"
     id = Column(Integer, primary_key=True)
     title = Column("track_title", String(512))
-    artist_id = artist_fullname = Column("artist_name", String(512))
-    album_id = album_fullname = Column("album_title", String(512))
+    artist_fullname = Column("artist_name", String(512))
+    album_fullname = Column("album_title", String(512))
     catalog = Column("directory", Integer, ForeignKey('cc_music_dirs.id'))
     #catalog = relationship("Catalog", backref="songs")
     filepath = Column(Text)
@@ -158,6 +158,14 @@ class Song(Base):
     artist_name = column_property(func.no_prefix(artist_fullname, prefixes))
     album_prefix = column_property(func.get_prefix(album_fullname, prefixes))
     album_name = column_property(func.no_prefix(album_fullname, prefixes))
+
+    @hybrid_property
+    def album_id(self):
+        return self.album_fullname
+
+    @hybrid_property
+    def artist_id(self):
+        return self.artist_fullname
 
     @hybrid_property
     def album(self):
