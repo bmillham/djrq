@@ -1,7 +1,8 @@
 import djrq.middleware
 import web
-from djrq.model import get_new_pending_requests_info, get_artist_by_letter
-from djrq.model import get_artist_letters_counts, get_album_by_letter, get_album_letters_counts
+from ..model.helpers import get_new_pending_requests_info
+from ..model.helpers import get_artist_by_letter, get_artist_letters_counts
+from ..model.helpers import get_album_by_letter, get_album_letters_counts
 from basecontroller import BaseController
 from urllib2 import unquote
 

@@ -2,7 +2,9 @@ import djrq.middleware
 import web
 from web.core.templating import render
 from datetime import datetime
-from djrq.model import *
+from ...model import session
+from ...model.mistags import Mistags
+from ...model.song import Song
 
 class MistagForm(web.core.HTTPMethod):
     def get(self, *args, **kwargs):

@@ -1,6 +1,6 @@
 import djrq.middleware
 import web
-from djrq.model import get_current_requests, get_new_pending_requests_info
+from ..model.helpers import get_new_pending_requests_info, get_current_requests
 from basecontroller import BaseController
 
 class RequestController(BaseController):

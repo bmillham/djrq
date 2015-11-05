@@ -1,7 +1,8 @@
 from web.core import request
 import djrq.middleware
 import web
-from djrq.model import *
+#from djrq.model import *
+from ..model.helpers import get_last_played
 
 from basecontroller import BaseController
 

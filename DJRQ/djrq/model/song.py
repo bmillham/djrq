@@ -1,6 +1,36 @@
 from . import *
-from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy.orm import column_property
+from catalog import Catalog
+
+class Name(object):
+    def __init__(self, type, fullname, name, prefix):
+        self._type = type
+        self._fullname = fullname
+        self._name = name
+        self._prefix = prefix
+
+    def __unicode__(self):
+        from urllib import quote_plus
+        return u'<a href="/{}/name/{}">{}</a>'.format(self._type, self._fullname, self._fullname)
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def prefix(self):
+        return self._prefix
+
+    @property
+    def fullname(self):
+        return self._fullname
+
+    @property
+    def new_link(self):
+        return u'<a href="/{}/new/name/{}">{}</a>'.format(self._type, self._fullname, self._fullname)
+
+    @property
+    def songs(self):
+        return session.query(Song).filter(eval("Song.{}_fullname".format(self._type))==self._fullname)
 
 class Song(Base):
     __tablename__ = "cc_files"
@@ -33,6 +63,22 @@ class Song(Base):
     artist_name = column_property(func.no_prefix(artist_fullname, prefixes))
     album_prefix = column_property(func.get_prefix(album_fullname, prefixes))
     album_name = column_property(func.no_prefix(album_fullname, prefixes))
+
+    @hybrid_property
+    def album_id(self):
+        return self.album_fullname
+
+    @hybrid_property
+    def artist_id(self):
+        return self.artist_fullname
+
+    @hybrid_property
+    def album(self):
+        return Name('album', self.album_fullname, self.album_name, self.album_prefix)
+    
+    @hybrid_property
+    def artist(self):
+        return Name('artist', self.artist_fullname, self.artist_name, self.artist_prefix)
 
     @hybrid_property
     def file(self):

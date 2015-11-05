@@ -1,4 +1,3 @@
-from sqlalchemy.ext.hybrid import hybrid_property
 from . import *
 
 class Catalog(Base):
@@ -12,5 +11,3 @@ class Catalog(Base):
     @hybrid_property
     def name(self):
         return self.directory.rsplit('/', 2)[1]
-
-    

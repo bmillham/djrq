@@ -1,6 +1,8 @@
 import djrq.middleware
 import web
-from djrq.model import *
+from ..model import session
+from ..model.helpers import get_artist_letters_counts, get_new_pending_requests_info
+from ..model.song import Song
 from basecontroller import BaseController
 
 class AlbumController(BaseController):

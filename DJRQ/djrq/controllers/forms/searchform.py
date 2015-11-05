@@ -1,5 +1,5 @@
 import web
-from djrq.model import full_text_search
+from ...model.helpers import full_text_search
 
 class SearchForm(web.core.HTTPMethod):
     def get(self, *args, **kwargs):

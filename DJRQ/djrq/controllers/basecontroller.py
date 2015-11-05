@@ -1,6 +1,10 @@
 import djrq.middleware
 import web
 from djrq.model import *
+from ..model.helpers import get_new_pending_requests_info
+from ..model.listeners import Listeners
+from ..model.siteoptions import SiteOptions
+from ..model.song import Song
 
 class BaseController(web.core.Controller):
     def __before__(self, *args, **kw):

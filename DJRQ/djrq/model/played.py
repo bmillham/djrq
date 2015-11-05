@@ -1,5 +1,4 @@
 from . import *
-from sqlalchemy.ext.hybrid import hybrid_property
 
 class Played(Base):
     __tablename__ = 'cc_playout_history'
@@ -13,6 +12,10 @@ class Played(Base):
     @hybrid_property
     def played_by(self):
         return self.show.value
+
+    @hybrid_property
+    def played_by_me(self):
+        return True
 
 class PlayedShow(Base):
     __tablename__ = "cc_playout_history_metadata"

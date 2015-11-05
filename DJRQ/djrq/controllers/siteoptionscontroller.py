@@ -1,6 +1,9 @@
 import djrq.middleware
 import web
-from djrq.model import get_current_requests, get_new_pending_requests_info, get_new_artists, get_new_counts, session, Listeners
+from ..model import session
+from ..model.listeners import Listeners
+from ..model.helpers import get_current_requests, get_new_artists, get_new_counts
+from ..model.helpers import get_new_pending_requests_info
 from time import time
 from basecontroller import BaseController
 

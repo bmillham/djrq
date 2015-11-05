@@ -1,5 +1,5 @@
 import web
-from djrq.model import advanced_search
+from ...model.helpers import advanced_search
 
 class AdvancedSearchForm(web.core.HTTPMethod):
     def get(self, *args, **kwargs):

@@ -2,7 +2,8 @@ from web.core import request
 import djrq.middleware
 import web
 from web.core.templating import render
-from djrq.model import *
+from ...model.suggestions import Suggestions
+from ...model import session
 
 class SuggestionForm(web.core.HTTPMethod):
     def post(self, **kwargs):

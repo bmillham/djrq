@@ -2,7 +2,9 @@ import djrq.middleware
 import web
 from web.core.templating import render
 from datetime import datetime
-from djrq.model import *
+from ...model import session
+from ...model.song import Song
+from ...model.requestlist import RequestList
 
 class RequestForm(web.core.HTTPMethod):
     def get(self, *args, **kwargs):
