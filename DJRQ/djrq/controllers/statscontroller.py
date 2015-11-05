@@ -1,6 +1,6 @@
 import djrq.middleware
 import web
-from djrq.model import *
+from ..model import session, func
 from ..model.helpers import get_total_artists, get_total_albums, get_top_10
 from ..model.helpers import get_top_played_by_me, get_top_requested, get_top_requestors
 from ..model.played import Played

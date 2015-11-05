@@ -46,7 +46,6 @@ from humanize import naturalsize, naturaltime
        id = row.artist_id
        link_type = 'name'
       endtry %>
-##   <tr><td>${loop.index + 1}</td><td><a href="/artist/name/${row.artist_fullname}">${row.artist_fullname}</a></td><td>${row.artist_count}</td></tr>
     <tr><td>${loop.index + 1}</td><td><a href="/artist/${link_type}/${id}">${row.artist_fullname}</a></td><td>${row.artist_count}</td></tr>
    % endfor
   </table>
