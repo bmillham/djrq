@@ -8,7 +8,6 @@ from basecontroller import BaseController
 
 class ArtistController(BaseController):
     def __after__(self, result, *args, **kw):
-        print "Browse after:", args, kw, result
         if result is None:
             result = ('djrq.templates.letters', dict(current_page='/browse/artist',
                                                      letter=None,

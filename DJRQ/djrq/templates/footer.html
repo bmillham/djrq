@@ -1,8 +1,9 @@
 <%!
 	from datetime import datetime
 %>
+<%page args='database_type'/>
  <h5 align="center">&copy; 2010-${datetime.now().year} Brian Millham</h4>
  <h5 align="center">Glyphicons courtesy of <a href="http://glyphicons.com/">glyphicons.com</a></h5>
- <h6 align="center">Powered by Python, WebCore, Mako Templates, MySQL (with SQLAlchemy), Twitter Bootstrap and Nginx</h6>
+ <h6 align="center">Powered by Python, WebCore, Mako Templates, ${database_type} (with SQLAlchemy), Twitter Bootstrap and Nginx</h6>
  <h6 align="center">Important disclaimer: This site is for informational purposes only. No music files are hosted
 					on this site.</h6>

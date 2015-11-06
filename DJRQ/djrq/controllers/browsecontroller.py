@@ -46,4 +46,7 @@ class BrowseController(BaseController):
     def album(self, letter=None, **kw):
         browse_by = 'album'
         a_list = get_album_by_letter(kw['selected_catalogs'], letter) if letter else None
-        return dict(letters=get_album_letters_counts(kw['selected_catalogs']), a_list=a_list, browse_by='album', browseletter=letter), kw
+        return dict(letters=get_album_letters_counts(kw['selected_catalogs']),
+                    a_list=a_list,
+                    browse_by='album',
+                    browseletter=letter), kw

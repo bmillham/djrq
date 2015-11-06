@@ -76,7 +76,7 @@ import djrq
      <%block name="letterscontainer"/>     
      <%block name="mainpage"/>
     </div>
-    <%include file="djrq.templates.footer"/>
+    <%include file="djrq.templates.footer" args="database_type=database_type"/>
     </p>
 % if show_title != '':
     <nav class="navbar navbar-inverse navbar-fixed-bottom">

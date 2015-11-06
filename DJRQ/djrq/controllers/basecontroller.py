@@ -1,6 +1,6 @@
 import djrq.middleware
 import web
-from ..model import session
+from ..model import session, database_type
 from ..model.helpers import get_new_pending_requests_info
 from ..model.listeners import Listeners
 from ..model.siteoptions import SiteOptions
@@ -20,3 +20,9 @@ class BaseController(web.core.Controller):
             web.core.session['nick'] = ""
         return super(BaseController, self).__before__(*args, **kw)
     
+    def __after__(self, *args, **kw):
+        a, k = args[0]
+        k['database_type'] = database_type
+        z = kw.copy()
+        z.update(k)
+        return super(BaseController, self).__after__((a, z))
