@@ -7,6 +7,8 @@ from basecontroller import BaseController
 
 class AlbumController(BaseController):
     def id(self, *args, **kwargs):
+        from ..model.album import Album
+
         a = session.query(Album).filter(Album.id == args[0]).one()
         return "djrq.templates.album", dict(album=a,
                                             songs=a.songs,

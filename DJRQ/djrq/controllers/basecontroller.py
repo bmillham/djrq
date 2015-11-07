@@ -21,6 +21,8 @@ class BaseController(web.core.Controller):
         return super(BaseController, self).__before__(*args, **kw)
     
     def __after__(self, *args, **kw):
+        if args[0] is None:
+            return
         a, k = args[0]
         k['database_type'] = database_type
         z = kw.copy()

@@ -1,7 +1,8 @@
 import djrq.middleware
 import web
 from web.auth import authorize
-from djrq.model import *
+from ...model import session
+from ...model.suggestions import Suggestions
 from ..basecontroller import BaseController
 from account import AccountMixIn
 

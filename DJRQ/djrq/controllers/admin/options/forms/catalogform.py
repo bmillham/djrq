@@ -1,6 +1,8 @@
 import djrq.middleware
 import web
-from djrq.model import *
+from .....model import session
+from .....model.siteoptions import SiteOptions
+from .....model.catalog import Catalog
 from web.auth import authorize
 #from ...account import AccountMixIn
 

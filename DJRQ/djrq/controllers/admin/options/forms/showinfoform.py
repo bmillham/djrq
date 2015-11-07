@@ -1,6 +1,7 @@
 import djrq.middleware
 import web
-from djrq.model import *
+from .....model import session
+from .....model.siteoptions import SiteOptions
 from web.auth import authorize
 
 class ShowInfoForm(web.core.HTTPMethod):

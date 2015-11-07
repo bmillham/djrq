@@ -1,6 +1,8 @@
 import djrq.middleware
 import web
-from djrq.model import *
+from ...model import session
+from ...model.helpers import get_all_requests_info, get_new_pending_requests_info
+from ...model.requestlist import RequestList
 from ..basecontroller import BaseController
 from web.auth import authorize
 from account import AccountMixIn

@@ -1,6 +1,7 @@
 import djrq.middleware
 import web
-from djrq.model import *
+from ...model import session
+from ...model.mistags import Mistags
 from ..basecontroller import BaseController
 from web.auth import authorize
 from account import AccountMixIn

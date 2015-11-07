@@ -32,6 +32,7 @@ class ArtistController(BaseController):
          return None
 
     def id(self, *args, **kw):
+        from ..model.artist import Artist
         a = session.query(Artist).filter(Artist.id == args[0]).one()
         return dict(artist=a,
                     viewing_new=False,
@@ -69,6 +70,7 @@ class ArtistController(BaseController):
         return a, new_songs
 
     def new(self, *args, **kw):
+        from ..model.artist import Artist
         args = list(args)
         arg = args.pop(0)
         if arg == 'name':
@@ -78,7 +80,7 @@ class ArtistController(BaseController):
             try:
                 days = int(args[0])
             except:
-                days = 30
+                days = 90
             start = int(time()) - (60 * 60 * 24 * days)
             a = session.query(Artist).filter(Artist.id == id, Song.addition_time >= start).first()
             new_songs = session.query(Song).filter(Song.artist_id == id, Song.addition_time >= start).order_by(Song.title)

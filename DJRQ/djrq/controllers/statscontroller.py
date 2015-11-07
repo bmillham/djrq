@@ -11,8 +11,6 @@ class StatsController(BaseController):
     def index(self, *args, **kwargs):
         catalogs = kwargs['selected_catalogs']
         played_by_me = session.query(func.count(Played.track_id.distinct()).label('total')).join(Song).filter(Song.catalog.in_(catalogs), Played.played_by_me == 1).one()
-        #total_artists = session.query(func.count(Artist.fullname.distinct()).label('total')).join(Song).filter(Song.catalog.in_(catalogs)).one()
-        #total_albums = session.query(func.count(Album.id.distinct()).label('total')).join(Song).filter(Song.catalog.in_(catalogs)).one()
         total_artists = get_total_artists(catalogs)
         total_albums = get_total_albums(catalogs)
         stats = session.query(func.sum(Song.size).label('song_size'),
