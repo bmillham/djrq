@@ -12,3 +12,4 @@ local/
 hello.py
 service-example.py
 DJRQ/tools/sqlalchemy-fulltext-search-dev
+DJRQ/test.py
