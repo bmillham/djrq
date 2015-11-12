@@ -4,6 +4,7 @@
 from djrq.templates.helpers import colon, nt_from_now
 from datetime import datetime
 from humanize import naturalsize, naturaltime
+from urllib import quote
 %>
 
 <%inherit file="djrq.templates.master"/>
@@ -43,7 +44,7 @@ from humanize import naturalsize, naturaltime
        id = int(row.artist_id)
        link_type = 'id'
       except:
-       id = row.artist_id
+       id = quote(row.artist_id)
        link_type = 'name'
       endtry %>
     <tr><td>${loop.index + 1}</td><td><a href="/artist/${link_type}/${id}">${row.artist_fullname}</a></td><td>${row.artist_count}</td></tr>

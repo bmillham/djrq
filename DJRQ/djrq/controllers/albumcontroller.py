@@ -20,7 +20,8 @@ class AlbumController(BaseController):
                                                    requests_count=get_new_pending_requests_info()[0])
 
     def name(self, *args, **kwargs):
-        s = session.query(Song).filter(Song.album_fullname==args[0]).order_by(Song.track)
+        fn = u'/'.join(args)
+        s = session.query(Song).filter(Song.album_fullname==fn).order_by(Song.track)
         return "djrq.templates.album", dict(album=s[0].album,
                                             listeners=kwargs['listeners'],
                                                    current_page="album",

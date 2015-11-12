@@ -8,6 +8,17 @@ from artist import Artist
 from album import Album
 from sqlalchemy.sql import func, or_
 
+def get_played_by_me(catalogs=[]):
+    return session.query(func.count(Played.track_id.distinct()).label('total')).\
+        join(Song).filter(Song.catalog.in_(catalogs), Played.played_by_me == 1).one()
+
+def get_song_stats(catalogs=[]):
+    return session.query(func.sum(Song.size).label('song_size'),
+                              func.count(Song.id).label('total_songs'),
+                              func.avg(Song.size).label('avg_song_size'),
+                              func.sum(Song.time).label('song_time'),
+                              func.avg(Song.time).label('avg_song_time')).filter(Song.catalog.in_(catalogs)).one()
+
 def get_total_artists(catalogs):
     return session.query(func.count(Artist.fullname.distinct()).label('total')).join(Song).filter(Song.catalog.in_(catalogs)).one()
 
